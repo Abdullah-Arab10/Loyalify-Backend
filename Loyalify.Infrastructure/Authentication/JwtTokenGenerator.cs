@@ -25,24 +25,19 @@ public class JwtTokenGenerator(
             new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
             SecurityAlgorithms.HmacSha256);
-
         var Roles = await _userManager.GetRolesAsync(user);
         var claims = new List<Claim>
         {
-            new("Id",user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub,user.Id.ToString()),
             new(JwtRegisteredClaimNames.Email,user.Email),
             new(JwtRegisteredClaimNames.GivenName,user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName,user.LastName),
-            new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Iat,
-                _dateTimeProvider.UtcNow.ToLocalTime().ToString())
+            new(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
         };
-
-        foreach(var role in Roles)
+        foreach (var role in Roles)
         {
-            claims.Add(new Claim("Role", role));
+            claims.Add(new Claim(ClaimTypes.Role, role));
         }
-
         var sercurityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,

@@ -24,12 +24,12 @@ public class LoginQueryHandler(
             return Errors.Authentication.InvalidCredentials;
         }
         // Validate the password
-        if (!_userRepository.CheckPassword(user,query.Password).Result)
+        if (!_userRepository.CheckPassword(user, query.Password).Result)
         {
             return Errors.Authentication.InvalidCredentials;
         }
         // create JWT token
-        var token = await _jwtTokenGenerator.GenerateToken(user);
+        var token = _jwtTokenGenerator.GenerateToken(user).Result;
         return new LoginResult(token);
     }
 }

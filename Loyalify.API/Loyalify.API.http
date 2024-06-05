@@ -6,7 +6,7 @@ Content-Type: application/json
 {
   "FirstName": "Rami",
   "LastName": "Hamosh",
-  "Email": "rami1@gmail.com",
+  "Email": "rami@gmail.com",
   "Password": "Rami@12345", 
   "PhoneNumber": "0960631420",
   "Address": "Nabek"
@@ -20,5 +20,5 @@ Content-Type: application/json
   "Password": "Rami@12345"
 }
 ###
-Get {{host}}/store
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJZCI6IjAzNTY0MjE5LTFiNzEtNGUxOS01ZTIyLTA4ZGM4M2Q4MmM0NCIsImVtYWlsIjoicmFtaUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiUmFtaSIsImZhbWlseV9uYW1lIjoiSGFtb3NoIiwianRpIjoiYjcwNTNlMjctOTExZi00M2I1LTg0OTUtMjk3NTBhZDIwNTUxIiwiaWF0IjoiNi80LzIwMjQgMzowMjoyMyBBTSIsIlJvbGUiOiJVc2VyIiwiZXhwIjoxNzE3NDcwMTQzLCJpc3MiOiJMb3phTG95YWx0eSIsImF1ZCI6IkxvemFMb3lhbHR5In0.O4DbyU7hlep0kbwJm9Wd9BbCswA9eYgl7jHBY9g5IXM
+Get {{host}}/Dinners
+Authorization: Bearer 
