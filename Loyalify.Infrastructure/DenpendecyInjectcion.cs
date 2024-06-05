@@ -22,14 +22,14 @@ public static class DenpendecyInjectcion
         this IServiceCollection services,
         ConfigurationManager configuration)
     {
+        services.AddDbContext<LoyalifyDbContext>();
+        services.AddIdentityCore<User>()
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<LoyalifyDbContext>();
+        services.AddScoped<UserManager<User>>();
         services.AddAuth(configuration);
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddDbContext<LoyalifyDbContext>();
-        services.AddScoped<UserManager<User>>();
-        services.AddIdentity<User, IdentityRole<Guid>>()
-            .AddEntityFrameworkStores<LoyalifyDbContext>()
-            .AddDefaultTokenProviders();
         return services;
     }
     public static IServiceCollection AddAuth(
@@ -41,27 +41,21 @@ public static class DenpendecyInjectcion
 
         services.AddSingleton(Options.Create(jwtSettings));
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-        services.AddAuthentication(options =>
-        {
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+
+        services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidAudience = jwtSettings.Audience,
-                    IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(jwtSettings.Secret))
-                };
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings.Issuer,
+                ValidAudience = jwtSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
+        
         return services;
     }
 }

@@ -28,11 +28,11 @@ public class RegisterCommandHandler
             FirstName = command.FirstName,
             LastName = command.LastName,
             Email = command.Email,
-            UserName = command.Email,
             PhoneNumber = command.PhoneNumber,
+            UserName = command.Email,
             Address = command.Address
         };
-        var isCreated = await _userRepository.Add(user,command.Password);
+        var isCreated = await _userRepository.Add(user, command.Password);
         var errors = new List<string>();
         foreach (var error in isCreated.Errors)
         {

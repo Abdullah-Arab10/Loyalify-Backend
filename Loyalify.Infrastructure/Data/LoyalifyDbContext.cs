@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 namespace Loyalify.Infrastructure.Data;
 
 public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
-    : IdentityDbContext<User,IdentityRole<Guid>,Guid>(options)
+    : IdentityDbContext<User, IdentityRole<Guid>, Guid>(options)
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
