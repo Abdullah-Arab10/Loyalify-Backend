@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace Loyalify.Contracts.Authentication;
+namespace Loyalify.Contracts.Store;
 
-public class RegisterResponse
+public class AddStoreResponse
 {
     public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.Created;
     public string Message { get; set; } = string.Empty;

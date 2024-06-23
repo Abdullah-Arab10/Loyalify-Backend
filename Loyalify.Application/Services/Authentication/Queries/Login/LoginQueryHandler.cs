@@ -5,12 +5,12 @@ using Loyalify.Domain.Common.Errors;
 using Loyalify.Domain.Entities;
 using MediatR;
 
-namespace Loyalify.Application.Authentication.Queries.Login;
+namespace Loyalify.Application.Services.Authentication.Queries.Login;
 
 public class LoginQueryHandler(
     IJwtTokenGenerator jwtTokenGenerator,
     IUserRepository userRepository) :
-    IRequestHandler<LoginQuery,ErrorOr<LoginResult>>
+    IRequestHandler<LoginQuery, ErrorOr<LoginResult>>
 {
     private readonly IJwtTokenGenerator _jwtTokenGenerator = jwtTokenGenerator;
     private readonly IUserRepository _userRepository = userRepository;

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Loyalify.Application.Authentication.Commands.Register;
+namespace Loyalify.Application.Services.Authentication.Commands.Register;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {

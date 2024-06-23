@@ -6,11 +6,11 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Net;
 
-namespace Loyalify.Application.Authentication.Commands.Register;
+namespace Loyalify.Application.Services.Authentication.Commands.Register;
 
-public class RegisterCommandHandler 
-    (IUserRepository userRepository):
-    IRequestHandler<RegisterCommand,ErrorOr<RegisterResult>>
+public class RegisterCommandHandler
+    (IUserRepository userRepository) :
+    IRequestHandler<RegisterCommand, ErrorOr<RegisterResult>>
 {
     private readonly IUserRepository _userRepository = userRepository;
 
@@ -48,6 +48,8 @@ public class RegisterCommandHandler
         {
             return new Error();
         }
-        return new RegisterResult((HttpStatusCode)StatusCodes.Status201Created);
+        return new RegisterResult(
+            (HttpStatusCode)StatusCodes.Status201Created,
+            Message: "Registered successfully");
     }
 }

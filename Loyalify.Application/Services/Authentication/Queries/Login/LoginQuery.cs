@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 
-namespace Loyalify.Application.Authentication.Queries.Login;
+namespace Loyalify.Application.Services.Authentication.Queries.Login;
 
 public record LoginQuery(
     string Email,

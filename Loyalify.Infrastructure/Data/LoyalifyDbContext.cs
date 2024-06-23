@@ -21,6 +21,7 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
             optionsBuilder.UseSqlServer(connectionString);
         }
     }
+    public DbSet<Store> Stores { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>().Ignore(x => x.TwoFactorEnabled)
@@ -33,37 +34,67 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
                                   .Ignore(x => x.ConcurrencyStamp)
                                   .Ignore(x => x.EmailConfirmed);
         builder.Entity<IdentityRole<Guid>>().Ignore(x => x.NormalizedName);
-        RolesSeeder(builder);
-
+        AdminSeeder(builder);
         base.OnModelCreating(builder);
     }
 
-    private static void RolesSeeder(ModelBuilder builder)
+    private static void AdminSeeder(ModelBuilder builder)
     {
-        builder.Entity<IdentityRole<Guid>>().HasData(
-                    new IdentityRole<Guid>
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = "Admin",
-                        NormalizedName = "ADMIN",
-                    },
-                    new IdentityRole<Guid>
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = "User",
-                        NormalizedName = "USER"
-                    },
-                    new IdentityRole<Guid>
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = "StoreManager",
-                        NormalizedName = "STOREMANAGER"
-                    },
-                    new IdentityRole<Guid>
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = "Cashier",
-                        NormalizedName = "CASHIER"
-                    });
+        IdentityRole<Guid> role1 = RolesSeeder(builder);
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            FirstName = "Admin",
+            LastName = "Admin",
+            Email = "Admin@gmail.com",
+            NormalizedEmail = "ADMIN@GMAIL.COM",
+            UserName = "Admin@gmail.com",
+            NormalizedUserName = "ADMIN@GMAIL.COM",
+            PhoneNumber = "9817289341",
+            Address = "Nabek"
+        };
+        var password = new PasswordHasher<User>();
+        var hashed = password.HashPassword(user, "1234567");
+        user.PasswordHash = hashed;
+        builder.Entity<User>().HasData(user);
+        builder.Entity<IdentityUserRole<Guid>>().HasData(
+            new IdentityUserRole<Guid>
+            {
+                RoleId = role1.Id,
+                UserId = user.Id
+            }
+        );
+    }
+    private static IdentityRole<Guid> RolesSeeder(ModelBuilder builder)
+    {
+        var role1 = new IdentityRole<Guid>()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Admin",
+            NormalizedName = "ADMIN"
+        };
+        var role2 = new IdentityRole<Guid>()
+        {
+            Id = Guid.NewGuid(),
+            Name = "User",
+            NormalizedName = "USER"
+        };
+        var role3 = new IdentityRole<Guid>()
+        {
+            Id = Guid.NewGuid(),
+            Name = "StoreManager",
+            NormalizedName = "STOREMANAGER"
+        };
+        var role4 = new IdentityRole<Guid>()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Cashier",
+            NormalizedName = "CASHIER"
+        };
+        builder.Entity<IdentityRole<Guid>>().HasData(role1);
+        builder.Entity<IdentityRole<Guid>>().HasData(role2);
+        builder.Entity<IdentityRole<Guid>>().HasData(role3);
+        builder.Entity<IdentityRole<Guid>>().HasData(role4);
+        return role1;
     }
 }
