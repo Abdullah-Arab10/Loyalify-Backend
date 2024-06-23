@@ -1,5 +1,5 @@
-﻿using Loyalify.Application.Authentication.Commands.Register;
-using Loyalify.Application.Authentication.Queries.Login;
+﻿using Loyalify.Application.Services.Authentication.Commands.Register;
+using Loyalify.Application.Services.Authentication.Queries.Login;
 using Loyalify.Contracts.Authentication;
 using Mapster;
 

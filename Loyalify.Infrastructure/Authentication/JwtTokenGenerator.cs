@@ -36,7 +36,7 @@ public class JwtTokenGenerator(
         };
         foreach (var role in Roles)
         {
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new Claim("role", role));
         }
         var sercurityToken = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,

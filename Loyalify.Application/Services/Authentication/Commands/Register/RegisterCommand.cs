@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 using MediatR;
 
-namespace Loyalify.Application.Authentication.Commands.Register;
+namespace Loyalify.Application.Services.Authentication.Commands.Register;
 
 public record RegisterCommand(
     string FirstName,
