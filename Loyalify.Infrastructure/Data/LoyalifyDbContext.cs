@@ -22,6 +22,7 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
         }
     }
     public DbSet<Store> Stores { get; set; }
+    public DbSet<StoreCategory> StoreCategories { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>().Ignore(x => x.TwoFactorEnabled)

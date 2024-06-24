@@ -4,6 +4,6 @@ namespace Loyalify.Contracts.Store;
 
 public class AddStoreResponse
 {
-    public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.Created;
+    public HttpStatusCode Status { get; set; } = HttpStatusCode.Created;
     public string Message { get; set; } = string.Empty;
 }

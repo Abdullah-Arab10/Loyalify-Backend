@@ -1,4 +1,5 @@
 ﻿using ErrorOr;
+using Loyalify.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 
@@ -11,5 +12,6 @@ public record AddStoreCommand(
     string PhoneNumber,
     string Email,
     string Password,
+    string Category,
     string CoverImage,
     string StoreImage) : IRequest<ErrorOr<AddStoreResult>>;

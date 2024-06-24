@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace Loyalify.API.Controllers;
 
 [Route("Store")]
-[Authorize(Roles = "Admin")]
 public class StoreController(
     IMapper mapper,
     ISender mediator,
@@ -22,6 +21,7 @@ public class StoreController(
 
     [HttpPost]
     [Route("AddStore")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddStore([FromForm]AddStoreRequest request)
     {
         string coverImage = null!;
@@ -43,6 +43,7 @@ public class StoreController(
             request.PhoneNumber,
             request.StoreManagerEmail,
             request.StoreManagerPassword,
+            request.Category,
             coverImage,
             storeImage);
         //var command = _mapper.Map<AddStoreCommand>(request);
