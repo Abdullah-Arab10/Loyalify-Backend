@@ -3,5 +3,5 @@
 namespace Loyalify.Application.Services.Store.Commands.AddStore;
 
 public record AddStoreResult(
-    HttpStatusCode StatusCode,
+    HttpStatusCode Status,
     string Message);

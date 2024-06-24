@@ -1,6 +1,5 @@
 ﻿using Loyalify.Application.Common.Interfaces.Persistence;
 using Loyalify.Domain.Entities;
-using Loyalify.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 
 namespace Loyalify.Infrastructure.Persistence;

@@ -1,6 +1,5 @@
 ﻿using ErrorOr;
 using Loyalify.Application.Common.Interfaces.Persistence;
-using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Domain.Common.Errors;
 using Loyalify.Domain.Entities;
 using MediatR;
@@ -23,6 +22,11 @@ public class AddStoreCommandHandler(
         {
             return Errors.User.DuplicateEmail;
         }
+        var category = await _storeRepository.GetCategory(command.Category);
+        if(category is null)
+        {
+            return Errors.Category.CategoryNotExisted;
+        }
         var storeManager = new User()
         {
             FirstName = command.Email,
@@ -41,6 +45,7 @@ public class AddStoreCommandHandler(
             Address = command.Address,
             PhoneNumber = command.PhoneNumber,
             User = storeManager,
+            Category = category,
             CoverImage = command.CoverImage,
             StoreImage = command.StoreImage
         };
