@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Application.Services.Store.Commands.AddStore;
+using Loyalify.Application.Services.StoreServices.Queries.SeeStoresList;
 using Loyalify.Contracts.Store;
 using MapsterMapper;
 using MediatR;
@@ -43,7 +44,7 @@ public class StoreController(
             request.PhoneNumber,
             request.StoreManagerEmail,
             request.StoreManagerPassword,
-            request.Category,
+            request.CategoryId,
             coverImage,
             storeImage);
         //var command = _mapper.Map<AddStoreCommand>(request);
@@ -51,6 +52,15 @@ public class StoreController(
 
         return authResult.Match(
             authResult => Ok(_mapper.Map<AddStoreResponse>(authResult)),
+            Problem);
+    }
+    [HttpGet]
+    [Route("SeeStoresList/{id}")]
+    public async Task<IActionResult> SeeStoresList(int id)
+    {
+        var authResult = await _mediator.Send(new SeeStoresListQuery(id));
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
             Problem);
     }
 }

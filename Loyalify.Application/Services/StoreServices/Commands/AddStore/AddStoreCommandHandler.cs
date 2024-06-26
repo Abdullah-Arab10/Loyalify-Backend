@@ -22,7 +22,7 @@ public class AddStoreCommandHandler(
         {
             return Errors.User.DuplicateEmail;
         }
-        var category = await _storeRepository.GetCategory(command.Category);
+        var category = await _storeRepository.GetCategory(command.CategoryId);
         if(category is null)
         {
             return Errors.Category.CategoryNotExisted;

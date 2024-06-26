@@ -8,5 +8,7 @@ public static partial class Errors
     {
         public static Error CategoryNotExisted=> Error.NotFound(
             description: "Category doesn't exist");
+        public static Error CategoryExist => Error.Conflict(
+            description: "Category already exist");
     }
 }
