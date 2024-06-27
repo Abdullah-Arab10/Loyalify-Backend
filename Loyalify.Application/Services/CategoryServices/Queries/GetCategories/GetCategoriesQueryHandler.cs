@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using Loyalify.Application.Common.Interfaces.Persistence;
+using Loyalify.Domain.Common.Errors;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System.Net;
@@ -13,6 +14,10 @@ public class GetCategoriesQueryHandler(ICategoryRepository categoryRepository) :
     public async Task<ErrorOr<GetCategoriesResult>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
     {
         var Categories = await _categoryRepository.GetCategories();
+        if (Categories.Count == 0)
+        {
+            return Errors.Category.NoCategories;
+        }
         return new GetCategoriesResult(
             (HttpStatusCode)StatusCodes.Status200OK,
             Categories);

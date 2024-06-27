@@ -30,7 +30,8 @@ public class RegisterCommandHandler
             Email = command.Email,
             PhoneNumber = command.PhoneNumber,
             UserName = command.Email,
-            Address = command.Address
+            Address = command.Address,
+            IsActive = true
         };
         var isCreated = await _userRepository.Add(user, command.Password);
         var errors = new List<string>();

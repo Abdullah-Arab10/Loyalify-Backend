@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Application.Services.Store.Commands.AddStore;
+using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
 using Loyalify.Application.Services.StoreServices.Queries.SeeStoresList;
 using Loyalify.Contracts.Store;
 using MapsterMapper;
@@ -54,13 +55,23 @@ public class StoreController(
             authResult => Ok(_mapper.Map<AddStoreResponse>(authResult)),
             Problem);
     }
-    [HttpGet]
+    [HttpPost]
     [Route("SeeStoresList/{id}")]
-    public async Task<IActionResult> SeeStoresList(int id)
+    public async Task<IActionResult> SeeStoresList(int id,SeeStoresListRequest request)
     {
-        var authResult = await _mediator.Send(new SeeStoresListQuery(id));
+        var authResult = await _mediator.Send(new SeeStoresListQuery(id,request.Search));
         return authResult.Match(
             authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
+            Problem);
+    }
+    [HttpGet]
+    [Route("ChangeStoreState/{id}")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> ChangeStoreState(int id)
+    {
+        var authResult = await _mediator.Send(new DeactivateStoreCommand(id));
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<DeactivateStoreResponse>(authResult)),
             Problem);
     }
 }

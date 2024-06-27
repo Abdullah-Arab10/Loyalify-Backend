@@ -52,7 +52,8 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
             UserName = "Admin@gmail.com",
             NormalizedUserName = "ADMIN@GMAIL.COM",
             PhoneNumber = "9817289341",
-            Address = "Nabek"
+            Address = "Nabek",
+            IsActive = true,
         };
         var password = new PasswordHasher<User>();
         var hashed = password.HashPassword(user, "1234567");

@@ -16,8 +16,8 @@ POST {{host}}/Auth/login
 Content-Type: application/json
 
 {
-  "Email": "rami@gmail.com",
-  "Password": "Rami@12345"
+  "Email": "Admin@gmail.com",
+  "Password": "1234567"
 }
 ###
 Get {{host}}/Dinners

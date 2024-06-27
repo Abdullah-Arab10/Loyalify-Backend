@@ -35,6 +35,7 @@ public class AddStoreCommandHandler(
             UserName = command.Email,
             PhoneNumber = command.PhoneNumber,
             Address = command.Address,
+            IsActive = true
         };
         await _userRepository.Add(storeManager, command.Password);
         await _userRepository.AddUserToRole(storeManager, "StoreManager");
@@ -47,7 +48,8 @@ public class AddStoreCommandHandler(
             User = storeManager,
             Category = category,
             CoverImage = command.CoverImage,
-            StoreImage = command.StoreImage
+            StoreImage = command.StoreImage,
+            IsActive = true
         };
         await _storeRepository.Add(store);
         return new AddStoreResult(

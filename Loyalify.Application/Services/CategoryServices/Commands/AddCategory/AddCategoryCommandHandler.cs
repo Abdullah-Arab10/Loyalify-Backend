@@ -27,6 +27,6 @@ public class AddCategoryCommandHandler(ICategoryRepository categoryRepository) :
         await _categoryRepository.Add(newCategory);
         return new AddCategoryResult(
             (HttpStatusCode)StatusCodes.Status200OK,
-            "Category Added successfully");
+            "Category has been added successfully");
     }
 }

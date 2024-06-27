@@ -12,4 +12,5 @@ public class User : IdentityUser<Guid>
         set => base.Email = value; 
     }
     public string Address { get; set; } = null!;
+    public bool IsActive { get; set; }
 }
