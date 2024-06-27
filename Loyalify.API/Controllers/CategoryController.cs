@@ -3,12 +3,13 @@ using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Application.Services.CategoryServices.Commands.AddCategory;
 using Loyalify.Application.Services.CategoryServices.Queries.GetCategories;
 using Loyalify.Contracts.Category;
-using Loyalify.Infrastructure.Services;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loyalify.API.Controllers;
+[Authorize(Roles = "Admin")]
 public class CategoryController(
     IMapper mapper,
     ISender mediator,

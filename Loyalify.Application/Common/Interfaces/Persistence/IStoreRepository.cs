@@ -7,5 +7,7 @@ public interface IStoreRepository
 {
     Task Add(Store store);
     Task<StoreCategory?> GetCategory(int Id);
-    Task<List<StoresListDTO>> GetStores(int CategoryId);
+    Task<List<StoresListDTO>> GetStores(int CategoryId, string Search);
+    Task<bool> DeactivateStore(int Id);
+    Task<Guid> GetStoreUser(int Id);
 }

@@ -24,4 +24,19 @@ public class UserRepository(UserManager<User> userManager) : IUserRepository
     {
         return await _userManager.AddToRoleAsync(user, Role);
     }
+    public async Task BlockUser(string Id)
+    {
+        var user = await _userManager.FindByIdAsync(Id);
+        if (user is not null)
+        {
+            if (user.IsActive == true)
+            {
+                user.IsActive = false;
+            }
+            else
+            {
+                user.IsActive = true;
+            }
+        }
+    }
 }
