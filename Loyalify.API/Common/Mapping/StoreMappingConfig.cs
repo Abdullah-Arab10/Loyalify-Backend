@@ -28,6 +28,7 @@ public class StoreMappingConfig : IRegister
                 .Map(dest => dest.Categories, src => src.Categories.Adapt<List<StoreCategory>>());
         config.NewConfig<AddCategoryRequest, AddCategoryCommand>();
         config.NewConfig<AddCategoryResult, AddCategoryResponse>();
-        config.NewConfig<DeactivateStoreResult, DeactivateStoreCommand>();
+        config.NewConfig<DeactivateStoreResult, DeactivateStoreResponse>();
+        config.NewConfig<DeactivateStoreRequest, DeactivateStoreCommand>();
     }
 }

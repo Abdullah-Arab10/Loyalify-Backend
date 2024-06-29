@@ -58,9 +58,9 @@ public class StoreController(
             authResult => Ok(_mapper.Map<AddStoreResponse>(authResult)),
             Problem);
     }
-    [HttpPost]
+    [HttpGet]
     [Route("GetAllStoresUser")]
-    public async Task<IActionResult> GetAllStoresUser(SeeStoresListRequest request)
+    public async Task<IActionResult> GetAllStoresUser([FromQuery]SeeStoresListRequest request)
     {
         var query = _mapper.Map<GetAllStoresUserQuery>(request);
         var authResult = await _mediator.Send(query);
@@ -68,9 +68,9 @@ public class StoreController(
             authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
             Problem);
     }
-    [HttpPost]
+    [HttpGet]
     [Route("GetAllStoresAdmin")]
-    public async Task<IActionResult> GetAllStoresAdmin(SeeStoresListRequest request)
+    public async Task<IActionResult> GetAllStoresAdmin([FromQuery]SeeStoresListRequest request)
     {
         var query = _mapper.Map<GetAllStoresAdminQuery>(request);
         var authResult = await _mediator.Send(query);
@@ -78,12 +78,13 @@ public class StoreController(
             authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
             Problem);
     }
-    [HttpGet]
-    [Route("ChangeStoreState/{id}")]
+    [HttpPost]
+    [Route("ChangeStoreState")]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> ChangeStoreState(int id)
+    public async Task<IActionResult> ChangeStoreState([FromBody]DeactivateStoreRequest request)
     {
-        var authResult = await _mediator.Send(new DeactivateStoreCommand(id));
+        var command = _mapper.Map<DeactivateStoreCommand>(request);
+        var authResult = await _mediator.Send(command);
         return authResult.Match(
             authResult => Ok(_mapper.Map<DeactivateStoreResponse>(authResult)),
             Problem);
