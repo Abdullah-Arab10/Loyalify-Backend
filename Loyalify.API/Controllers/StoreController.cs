@@ -90,7 +90,7 @@ public class StoreController(
     }
     [HttpPut]
     [Route("UpdateStore/{id}")]
-    public async Task<IActionResult> UpdateStore(UpdateStoreRequest request,int id)
+    public async Task<IActionResult> UpdateStore(int id,UpdateStoreRequest request)
     {
         string coverImage = null!;
         if (request.CoverImageFile != null)
@@ -110,7 +110,6 @@ public class StoreController(
             Description = request.Description,
             Address = request.Address,
             PhoneNumber = request.PhoneNumber,
-            CategoryId = request.CategoryId,
             StoreImage = storeImage,
             CoverImage = coverImage
         };

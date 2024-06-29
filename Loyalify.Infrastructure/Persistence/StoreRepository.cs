@@ -214,11 +214,7 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             }
             if (store.PhoneNumber is not null && store.PhoneNumber != eStore.PhoneNumber)
             {
-                eStore.Name = store.PhoneNumber;
-            }
-            if(store.CategoryId != 0 && store.CategoryId != eStore.Category.Id)
-            {
-                eStore.Category.Id = store.CategoryId;
+                eStore.PhoneNumber = store.PhoneNumber;
             }
             if (store.CoverImage is not null) 
             {
