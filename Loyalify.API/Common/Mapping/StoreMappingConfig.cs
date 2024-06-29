@@ -2,7 +2,8 @@
 using Loyalify.Application.Services.CategoryServices.Commands.AddCategory;
 using Loyalify.Application.Services.CategoryServices.Queries.GetCategories;
 using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
-using Loyalify.Application.Services.StoreServices.Queries.SeeStoresList;
+using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresAdmin;
+using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
 using Loyalify.Contracts.Category;
 using Loyalify.Contracts.Store;
 using Loyalify.Domain.Entities;
@@ -14,9 +15,14 @@ public class StoreMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<SeeStoresListResult, SeeStoresListResponse>()
+        config.NewConfig<GetAllStoresUserResult, SeeStoresListResponse>()
             .Map(dest => dest.Status, src => src.Status)
-            .Map(dest => dest.Stores, src => src.Stores.Adapt<List<StoresListDTO>>());
+            .Map(dest => dest.Stores, src => src.Stores.Adapt<List<StoresListUserDTO>>());
+        config.NewConfig<GetAllStoresAdminResult, SeeStoresListResponse>()
+            .Map(dest => dest.Status, src => src.Status)
+            .Map(dest => dest.Stores, src => src.Stores.Adapt<List<StoresListAdminDTO>>());
+        config.NewConfig<SeeStoresListRequest, GetAllStoresAdminQuery>();
+        config.NewConfig<SeeStoresListRequest, GetAllStoresUserQuery>();
         config.NewConfig<GetCategoriesResult, GetCategoriesResponse>()
                 .Map(dest => dest.Status, src => src.Status)
                 .Map(dest => dest.Categories, src => src.Categories.Adapt<List<StoreCategory>>());

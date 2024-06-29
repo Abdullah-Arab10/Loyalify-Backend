@@ -3,7 +3,6 @@ using Loyalify.Application.Common.Interfaces.Persistence;
 using Loyalify.Domain.Entities;
 using Loyalify.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace Loyalify.Infrastructure.Persistence;
 
@@ -20,7 +19,7 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
         var cat = await _dbContext.StoreCategories.FirstOrDefaultAsync(x => x.Id == Id);
         return cat;
     }
-    public async Task<List<StoresListDTO>> GetStores(int CategoryId,string Search) 
+    public async Task<List<StoresListUserDTO>> GetStoresUser(int CategoryId,string Search) 
     {
         if(CategoryId == 0)
         {
@@ -28,7 +27,7 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             {
                 return await _dbContext.Stores
                 .Where(x => x.IsActive == true)
-                .Select(x => new StoresListDTO
+                .Select(x => new StoresListUserDTO
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -41,7 +40,7 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
                 return await _dbContext.Stores
                 .Where(x => x.IsActive == true && 
                 (x.Name.Contains(Search) || x.Description.Contains(Search)))
-                .Select(x => new StoresListDTO
+                .Select(x => new StoresListUserDTO
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -56,7 +55,7 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             {
                 return await _dbContext.Stores
                 .Where(x => x.Category.Id == CategoryId && x.IsActive == true)
-                .Select(x => new StoresListDTO
+                .Select(x => new StoresListUserDTO
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -69,7 +68,7 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
                 return await _dbContext.Stores
                 .Where(x => x.Category.Id == CategoryId && x.IsActive == true
                 && (x.Name.Contains(Search) || x.Description.Contains(Search)))
-                .Select(x => new StoresListDTO
+                .Select(x => new StoresListUserDTO
                 {
                     Id = x.Id,
                     Name = x.Name,
@@ -108,5 +107,128 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
     {
         var userId = await _dbContext.Stores.Where(x => x.Id == Id).Select(x => x.User.Id).FirstOrDefaultAsync();
         return userId;
+    }
+    public async Task<List<StoresListAdminDTO>> GetStoresAdmin(int CategoryId, string Search)
+    {
+        if (CategoryId == 0)
+        {
+            if (Search is null)
+            {
+                return await _dbContext.Stores
+                .Where(x => x.IsActive == true)
+                .Select(x => new StoresListAdminDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    UserId = x.User.Id,
+                    CategoryId = x.Category.Id,
+                    StoreImage = x.StoreImage,
+                    CoverImage = x.CoverImage,
+                    IsActive = x.IsActive
+                })
+                .ToListAsync();
+            }
+            else
+            {
+                return await _dbContext.Stores
+                .Where(x => x.IsActive == true &&
+                (x.Name.Contains(Search) || x.Description.Contains(Search)))
+                .Select(x => new StoresListAdminDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    UserId = x.User.Id,
+                    CategoryId = x.Category.Id,
+                    StoreImage = x.StoreImage,
+                    CoverImage = x.CoverImage,
+                    IsActive = x.IsActive
+                })
+                .ToListAsync();
+            }
+        }
+        else
+        {
+            if (Search is null)
+            {
+                return await _dbContext.Stores
+                .Where(x => x.Category.Id == CategoryId && x.IsActive == true)
+                .Select(x => new StoresListAdminDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    UserId = x.User.Id,
+                    CategoryId = x.Category.Id,
+                    StoreImage = x.StoreImage,
+                    CoverImage = x.CoverImage,
+                    IsActive = x.IsActive
+                })
+                .ToListAsync();
+            }
+            else
+            {
+                return await _dbContext.Stores
+                .Where(x => x.Category.Id == CategoryId && x.IsActive == true
+                && (x.Name.Contains(Search) || x.Description.Contains(Search)))
+                .Select(x => new StoresListAdminDTO
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Address = x.Address,
+                    PhoneNumber = x.PhoneNumber,
+                    UserId = x.User.Id,
+                    CategoryId = x.Category.Id,
+                    StoreImage = x.StoreImage,
+                    CoverImage = x.CoverImage,
+                    IsActive = x.IsActive
+                })
+                .ToListAsync();
+            }
+        }
+    }
+    public async Task Update(UpdateStoreDTO store,int Id)
+    {
+        var eStore = await _dbContext.Stores.FindAsync(Id);
+        if(eStore is not null && eStore.IsActive != false)
+        {
+            if (store.Name is not null && store.Name != eStore.Name)
+            {
+                eStore.Name = store.Name;
+            }
+            if (store.Description is not null && store.Description != eStore.Description)
+            {
+                eStore.Description = store.Description;
+            }
+            if (store.Address is not null && store.Address != eStore.Address)
+            {
+                eStore.Address = store.Address;
+            }
+            if (store.PhoneNumber is not null && store.PhoneNumber != eStore.PhoneNumber)
+            {
+                eStore.Name = store.PhoneNumber;
+            }
+            if(store.CategoryId != 0 && store.CategoryId != eStore.Category.Id)
+            {
+                eStore.Category.Id = store.CategoryId;
+            }
+            if (store.CoverImage is not null) 
+            {
+                eStore.CoverImage = store.CoverImage;
+            }
+            if (store.StoreImage is not null) 
+            {
+                eStore.StoreImage = store.StoreImage;
+            }
+        }
+        await _dbContext.SaveChangesAsync();
     }
 }

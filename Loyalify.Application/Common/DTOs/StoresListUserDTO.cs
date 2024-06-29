@@ -1,6 +1,6 @@
 ﻿namespace Loyalify.Application.Common.DTOs;
 
-public class StoresListDTO
+public class StoresListUserDTO
 {
     public int Id { get; set; }
     public string Name { get; set; } = null!;
