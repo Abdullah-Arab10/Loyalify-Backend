@@ -1,8 +1,11 @@
 ﻿using ErrorOr;
+using Loyalify.Application.Common.DTOs;
 using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Application.Services.Store.Commands.AddStore;
+using Loyalify.Application.Services.StoreServices.Commands.UpdateStore;
 using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
-using Loyalify.Application.Services.StoreServices.Queries.SeeStoresList;
+using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresAdmin;
+using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
 using Loyalify.Contracts.Store;
 using MapsterMapper;
 using MediatR;
@@ -56,10 +59,21 @@ public class StoreController(
             Problem);
     }
     [HttpPost]
-    [Route("SeeStoresList/{id}")]
-    public async Task<IActionResult> SeeStoresList(int id,SeeStoresListRequest request)
+    [Route("GetAllStoresUser")]
+    public async Task<IActionResult> GetAllStoresUser(SeeStoresListRequest request)
     {
-        var authResult = await _mediator.Send(new SeeStoresListQuery(id,request.Search));
+        var query = _mapper.Map<GetAllStoresUserQuery>(request);
+        var authResult = await _mediator.Send(query);
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
+            Problem);
+    }
+    [HttpPost]
+    [Route("GetAllStoresAdmin")]
+    public async Task<IActionResult> GetAllStoresAdmin(SeeStoresListRequest request)
+    {
+        var query = _mapper.Map<GetAllStoresAdminQuery>(request);
+        var authResult = await _mediator.Send(query);
         return authResult.Match(
             authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
             Problem);
@@ -72,6 +86,38 @@ public class StoreController(
         var authResult = await _mediator.Send(new DeactivateStoreCommand(id));
         return authResult.Match(
             authResult => Ok(_mapper.Map<DeactivateStoreResponse>(authResult)),
+            Problem);
+    }
+    [HttpPut]
+    [Route("UpdateStore/{id}")]
+    public async Task<IActionResult> UpdateStore(UpdateStoreRequest request,int id)
+    {
+        string coverImage = null!;
+        if (request.CoverImageFile != null)
+        {
+            var fileResult = _photoService.SaveImage(request.CoverImageFile);
+            coverImage = fileResult;
+        }
+        string storeImage = null!;
+        if (request.StoreImageFile != null)
+        {
+            var fileResult = _photoService.SaveImage(request.StoreImageFile);
+            storeImage = fileResult;
+        }
+        var commandDTO = new UpdateStoreDTO()
+        {
+            Name = request.Name,
+            Description = request.Description,
+            Address = request.Address,
+            PhoneNumber = request.PhoneNumber,
+            CategoryId = request.CategoryId,
+            StoreImage = storeImage,
+            CoverImage = coverImage
+        };
+        var authResult = await _mediator.Send(
+            new UpdateStoreCommand(commandDTO,id));
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<AddStoreResponse>(authResult)),
             Problem);
     }
 }

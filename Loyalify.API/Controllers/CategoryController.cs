@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loyalify.API.Controllers;
+
+[Route("Category")]
 [Authorize(Roles = "Admin")]
 public class CategoryController(
     IMapper mapper,

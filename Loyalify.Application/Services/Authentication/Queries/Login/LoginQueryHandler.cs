@@ -28,6 +28,10 @@ public class LoginQueryHandler(
         {
             return Errors.Authentication.InvalidCredentials;
         }
+        if (!user.IsActive)
+        {
+            return Errors.Authentication.DeactivatedEmail;
+        }
         // create JWT token
         var token = _jwtTokenGenerator.GenerateToken(user).Result;
         return new LoginResult(token);

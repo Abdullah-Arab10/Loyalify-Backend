@@ -8,5 +8,7 @@ public static partial class Errors
     {
         public static Error InvalidCredentials => Error.Validation(
             description: "Invalid Credentials.");
+        public static Error DeactivatedEmail => Error.Forbidden(
+            description: "This email is deactivated");
     }
 }
