@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Loyalify.API.Controllers;
 
 [Route("Category")]
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
 public class CategoryController(
     IMapper mapper,
     ISender mediator,
@@ -34,12 +34,8 @@ public class CategoryController(
     public async Task<IActionResult> AddCategory([FromForm] AddCategoryRequest request)
     {
         string logo = null!;
-        if (request.Logo != null)
-        {
-            var fileResult = _photoService.SaveImage(request.Logo);
-            logo = fileResult;
-        }
-        var command = new AddCategoryCommand(request.Name,logo);
+      
+        var command = new AddCategoryCommand(request.Name);
         ErrorOr<AddCategoryResult> authResult = await _mediator.Send(command);
         return authResult.Match(
             authResult => Ok(_mapper.Map<AddCategoryResponse>(authResult)),

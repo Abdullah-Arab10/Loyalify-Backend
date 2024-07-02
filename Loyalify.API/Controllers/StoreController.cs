@@ -6,6 +6,7 @@ using Loyalify.Application.Services.StoreServices.Commands.UpdateStore;
 using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresAdmin;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
+using Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
 using Loyalify.Contracts.Store;
 using MapsterMapper;
 using MediatR;
@@ -26,7 +27,7 @@ public class StoreController(
 
     [HttpPost]
     [Route("AddStore")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> AddStore([FromForm]AddStoreRequest request)
     {
         string coverImage = null!;
@@ -80,7 +81,7 @@ public class StoreController(
     }
     [HttpPost]
     [Route("ChangeStoreState")]
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     public async Task<IActionResult> ChangeStoreState([FromBody]DeactivateStoreRequest request)
     {
         var command = _mapper.Map<DeactivateStoreCommand>(request);
@@ -119,5 +120,16 @@ public class StoreController(
         return authResult.Match(
             authResult => Ok(_mapper.Map<AddStoreResponse>(authResult)),
             Problem);
+    }
+
+
+    [HttpGet]
+    [Route("GetStoreById/{id}")]
+    public async Task<IActionResult> GetStoreInfo(int id)
+    {
+
+        var authResult = await _mediator.Send(new GetStoreInfoQuery(id));
+        return authResult.Match(authResult => Ok(_mapper.Map<GetStoreInfoResponse>(authResult)), Problem);
+
     }
 }
