@@ -227,4 +227,24 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
         }
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<GetStoreInfoDTO?> GetStoreInfo(int storeId)
+    {
+
+        return await _dbContext.Stores.Where(x => x.Id == storeId)
+            .Select(x => new GetStoreInfoDTO
+            {
+                Name = x.Name,
+                Description = x.Description,
+                Address = x.Address,
+                PhoneNumber = x.PhoneNumber,
+                CoverImage = x.CoverImage,
+                StoreImage = x.StoreImage,
+                CategoryId = x.Category.Id,
+                UserId = x.User.Id,
+                IsActive = x.IsActive
+
+            }).FirstOrDefaultAsync();
+
+    }
 }

@@ -12,4 +12,5 @@ public interface IStoreRepository
     Task<Guid> GetStoreUser(int Id);
     Task<List<StoresListAdminDTO>> GetStoresAdmin(int CategoryId, string Search);
     Task Update(UpdateStoreDTO Store,int Id);
+    Task<GetStoreInfoDTO?> GetStoreInfo(int Id);
 }

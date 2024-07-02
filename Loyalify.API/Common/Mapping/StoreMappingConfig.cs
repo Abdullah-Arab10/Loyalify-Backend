@@ -4,6 +4,7 @@ using Loyalify.Application.Services.CategoryServices.Queries.GetCategories;
 using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresAdmin;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
+using Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
 using Loyalify.Contracts.Category;
 using Loyalify.Contracts.Store;
 using Loyalify.Domain.Entities;
@@ -30,5 +31,9 @@ public class StoreMappingConfig : IRegister
         config.NewConfig<AddCategoryResult, AddCategoryResponse>();
         config.NewConfig<DeactivateStoreResult, DeactivateStoreResponse>();
         config.NewConfig<DeactivateStoreRequest, DeactivateStoreCommand>();
+        config.NewConfig<GetStoreInfoResult, GetStoreInfoResponse>()
+          .Map(dest => dest.Status, src => src.Status)
+          .Map(dest => dest.Store, src => src.Store.Adapt<GetStoreInfoDTO>());
+
     }
 }
