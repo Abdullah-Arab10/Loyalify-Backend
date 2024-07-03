@@ -9,6 +9,7 @@ public class BloggingContextFactory : IDesignTimeDbContextFactory<LoyalifyDbCont
     {
         var optionsBuilder = new DbContextOptionsBuilder<LoyalifyDbContext>();
         optionsBuilder.UseSqlServer("Server=.\\SQLExpress;Database=Loyalify;Trusted_Connection=true;TrustServerCertificate=true;");
+        //optionsBuilder.UseSqlServer("Server=(localDb)\\MSSQLLocalDB;Database=Loyalify;Trusted_Connection=true;TrustServerCertificate=true;");
         return new LoyalifyDbContext(optionsBuilder.Options);
     }
 }

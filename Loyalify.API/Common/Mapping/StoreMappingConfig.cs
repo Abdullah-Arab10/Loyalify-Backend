@@ -18,22 +18,22 @@ public class StoreMappingConfig : IRegister
     {
         config.NewConfig<GetAllStoresUserResult, SeeStoresListResponse>()
             .Map(dest => dest.Status, src => src.Status)
-            .Map(dest => dest.Stores, src => src.Stores.Adapt<List<StoresListUserDTO>>());
+            .Map(dest => dest.Items, src => src.Items.Adapt<List<StoresListUserDTO>>());
         config.NewConfig<GetAllStoresAdminResult, SeeStoresListResponse>()
             .Map(dest => dest.Status, src => src.Status)
-            .Map(dest => dest.Stores, src => src.Stores.Adapt<List<StoresListAdminDTO>>());
+            .Map(dest => dest.Items, src => src.Items.Adapt<List<StoresListAdminDTO>>());
         config.NewConfig<SeeStoresListRequest, GetAllStoresAdminQuery>();
         config.NewConfig<SeeStoresListRequest, GetAllStoresUserQuery>();
         config.NewConfig<GetCategoriesResult, GetCategoriesResponse>()
                 .Map(dest => dest.Status, src => src.Status)
-                .Map(dest => dest.Categories, src => src.Categories.Adapt<List<StoreCategory>>());
+                .Map(dest => dest.Items, src => src.Items.Adapt<List<StoreCategory>>());
         config.NewConfig<AddCategoryRequest, AddCategoryCommand>();
         config.NewConfig<AddCategoryResult, AddCategoryResponse>();
         config.NewConfig<DeactivateStoreResult, DeactivateStoreResponse>();
         config.NewConfig<DeactivateStoreRequest, DeactivateStoreCommand>();
         config.NewConfig<GetStoreInfoResult, GetStoreInfoResponse>()
           .Map(dest => dest.Status, src => src.Status)
-          .Map(dest => dest.Store, src => src.Store.Adapt<GetStoreInfoDTO>());
+          .Map(dest => dest.Items, src => src.Items.Adapt<GetStoreInfoDTO>());
 
     }
 }

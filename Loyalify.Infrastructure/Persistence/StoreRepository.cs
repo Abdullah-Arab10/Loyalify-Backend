@@ -3,6 +3,7 @@ using Loyalify.Application.Common.Interfaces.Persistence;
 using Loyalify.Domain.Entities;
 using Loyalify.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Loyalify.Infrastructure.Persistence;
 
@@ -115,41 +116,14 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             if (Search is null)
             {
                 return await _dbContext.Stores
-                .Where(x => x.IsActive == true)
-                .Select(x => new StoresListAdminDTO
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Address = x.Address,
-                    PhoneNumber = x.PhoneNumber,
-                    UserId = x.User.Id,
-                    CategoryId = x.Category.Id,
-                    StoreImage = x.StoreImage,
-                    CoverImage = x.CoverImage,
-                    IsActive = x.IsActive
-                })
-                .ToListAsync();
+                .Select(StoreForm()).ToListAsync();
             }
             else
             {
                 return await _dbContext.Stores
-                .Where(x => x.IsActive == true &&
-                (x.Name.Contains(Search) || x.Description.Contains(Search)))
-                .Select(x => new StoresListAdminDTO
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Address = x.Address,
-                    PhoneNumber = x.PhoneNumber,
-                    UserId = x.User.Id,
-                    CategoryId = x.Category.Id,
-                    StoreImage = x.StoreImage,
-                    CoverImage = x.CoverImage,
-                    IsActive = x.IsActive
-                })
-                .ToListAsync();
+                .Where(x => (x.Name.Contains(Search) ||
+                x.Description.Contains(Search)))
+                .Select(StoreForm()).ToListAsync();
             }
         }
         else
@@ -157,44 +131,38 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             if (Search is null)
             {
                 return await _dbContext.Stores
-                .Where(x => x.Category.Id == CategoryId && x.IsActive == true)
-                .Select(x => new StoresListAdminDTO
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Address = x.Address,
-                    PhoneNumber = x.PhoneNumber,
-                    UserId = x.User.Id,
-                    CategoryId = x.Category.Id,
-                    StoreImage = x.StoreImage,
-                    CoverImage = x.CoverImage,
-                    IsActive = x.IsActive
-                })
-                .ToListAsync();
+                .Where(x => x.Category.Id == CategoryId)
+                .Select(StoreForm()).ToListAsync();
             }
             else
             {
                 return await _dbContext.Stores
-                .Where(x => x.Category.Id == CategoryId && x.IsActive == true
+                .Where(x => x.Category.Id == CategoryId
                 && (x.Name.Contains(Search) || x.Description.Contains(Search)))
-                .Select(x => new StoresListAdminDTO
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Description = x.Description,
-                    Address = x.Address,
-                    PhoneNumber = x.PhoneNumber,
-                    UserId = x.User.Id,
-                    CategoryId = x.Category.Id,
-                    StoreImage = x.StoreImage,
-                    CoverImage = x.CoverImage,
-                    IsActive = x.IsActive
-                })
-                .ToListAsync();
+                .Select(StoreForm()).ToListAsync();
             }
         }
     }
+
+    private static Expression<Func<Store, StoresListAdminDTO>> StoreForm()
+    {
+        return x => new StoresListAdminDTO
+        {
+            Id = x.Id,
+            Name = x.Name,
+            Description = x.Description,
+            Address = x.Address,
+            PhoneNumber = x.PhoneNumber,
+            PointRatio = x.PointRatio,
+            UserId = x.User.Id,
+            CategoryId = x.Category.Id,
+            CategoryName = x.Category.Name,
+            StoreImage = x.StoreImage,
+            CoverImage = x.CoverImage,
+            IsActive = x.IsActive
+        };
+    }
+
     public async Task Update(UpdateStoreDTO store,int Id)
     {
         var eStore = await _dbContext.Stores.FindAsync(Id);
@@ -227,10 +195,8 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
         }
         await _dbContext.SaveChangesAsync();
     }
-
     public async Task<GetStoreInfoDTO?> GetStoreInfo(int storeId)
     {
-
         return await _dbContext.Stores.Where(x => x.Id == storeId)
             .Select(x => new GetStoreInfoDTO
             {
@@ -245,6 +211,5 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
                 IsActive = x.IsActive
 
             }).FirstOrDefaultAsync();
-
     }
 }

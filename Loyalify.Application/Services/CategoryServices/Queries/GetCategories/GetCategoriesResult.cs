@@ -5,4 +5,4 @@ namespace Loyalify.Application.Services.CategoryServices.Queries.GetCategories;
 
 public record GetCategoriesResult(
     HttpStatusCode Status,
-    List<StoreCategory> Categories);
+    List<StoreCategory> Items);

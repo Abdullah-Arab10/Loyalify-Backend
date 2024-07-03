@@ -1,6 +1,7 @@
 using Loyalify.API;
 using Loyalify.Application;
 using Loyalify.Infrastructure;
+using Microsoft.Extensions.FileProviders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseExceptionHandler("/error");
 }
+app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin 
+    .AllowCredentials());
 
+app.UseStaticFiles(new StaticFileOptions()
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Uploads")),
+    RequestPath = new PathString("/Uploads")
+});
 //app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

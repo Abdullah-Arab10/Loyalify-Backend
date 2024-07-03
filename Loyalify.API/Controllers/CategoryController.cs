@@ -33,8 +33,6 @@ public class CategoryController(
     [Route("AddCategory")]
     public async Task<IActionResult> AddCategory([FromForm] AddCategoryRequest request)
     {
-        string logo = null!;
-      
         var command = new AddCategoryCommand(request.Name);
         ErrorOr<AddCategoryResult> authResult = await _mediator.Send(command);
         return authResult.Match(
