@@ -22,7 +22,6 @@ public class AddCategoryCommandHandler(ICategoryRepository categoryRepository) :
         var newCategory = new StoreCategory()
         {
             Name = request.Name
-         
         };
         await _categoryRepository.Add(newCategory);
         return new AddCategoryResult(

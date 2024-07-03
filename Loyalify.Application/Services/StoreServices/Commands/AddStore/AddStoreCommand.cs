@@ -8,6 +8,7 @@ public record AddStoreCommand(
     string Description,
     string Address,
     string PhoneNumber,
+    decimal PointRation,
     string Email,
     string Password,
     int CategoryId,

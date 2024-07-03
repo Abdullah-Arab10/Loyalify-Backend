@@ -15,7 +15,9 @@ public class GetAllStoresAdminQueryHandler(IStoreRepository storeRepository) :
     public async Task<ErrorOr<GetAllStoresAdminResult>> Handle(GetAllStoresAdminQuery request, CancellationToken cancellationToken)
     {
         List<StoresListAdminDTO> stores =
-            await _storeRepository.GetStoresAdmin(request.CategoryId, request.Search);
+            await _storeRepository.GetStoresAdmin(
+                request.CategoryId,
+                request.Search);
         if (stores.Count == 0)
         {
             return Errors.Store.NoStores;

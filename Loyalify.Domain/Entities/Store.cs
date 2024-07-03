@@ -9,6 +9,12 @@ public class Store
     public string Description { get; set; } = null!;
     public string Address { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
+    private decimal _pointRatio;
+    public decimal PointRatio
+    {
+        get { return _pointRatio; }
+        set { _pointRatio = value / 100; }
+    }
     public StoreCategory Category { get; set; } = null!;
     public User User { get; set; } = null!;
     public string? CoverImage { get; set; }

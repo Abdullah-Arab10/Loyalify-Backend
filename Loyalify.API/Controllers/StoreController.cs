@@ -47,6 +47,7 @@ public class StoreController(
             request.Description,
             request.Address,
             request.PhoneNumber,
+            request.PointRation,
             request.StoreManagerEmail,
             request.StoreManagerPassword,
             request.CategoryId,

@@ -3,5 +3,7 @@ using System.Net;
 
 namespace Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
 
-public record GetStoreInfoResult(HttpStatusCode Status,GetStoreInfoDTO Store);
+public record GetStoreInfoResult(
+    HttpStatusCode Status,
+    GetStoreInfoDTO Items);
 

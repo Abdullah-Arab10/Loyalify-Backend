@@ -9,6 +9,7 @@ public class AddStoreRequest
     public string Description { get; set; } = null!;
     public string Address { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
+    public decimal PointRation { get; set; }
     public string StoreManagerEmail { get; set; } = null!;
     public string StoreManagerPassword { get; set; } = null!;
     public int CategoryId { get; set; }

@@ -45,6 +45,7 @@ public class AddStoreCommandHandler(
             Description = command.Description,
             Address = command.Address,
             PhoneNumber = command.PhoneNumber,
+            PointRatio = command.PointRation,
             User = storeManager,
             Category = category,
             CoverImage = command.CoverImage,
