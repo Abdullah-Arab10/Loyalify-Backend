@@ -37,8 +37,6 @@ public class AddStoreCommandHandler(
             Address = command.Address,
             IsActive = true
         };
-        await _userRepository.Add(storeManager, command.Password);
-        await _userRepository.AddUserToRole(storeManager, "StoreManager");
         var store = new Domain.Entities.Store()
         {
             Name = command.Name,
@@ -52,6 +50,8 @@ public class AddStoreCommandHandler(
             StoreImage = command.StoreImage,
             IsActive = true
         };
+        await _userRepository.Add(storeManager, command.Password);
+        await _userRepository.AddUserToRole(storeManager, "StoreManager");
         await _storeRepository.Add(store);
         return new AddStoreResult(
             (HttpStatusCode)StatusCodes.Status201Created,
