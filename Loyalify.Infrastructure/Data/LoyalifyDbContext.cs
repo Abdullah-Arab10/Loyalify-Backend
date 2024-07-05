@@ -36,6 +36,13 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
                                   .Ignore(x => x.EmailConfirmed);
         builder.Entity<IdentityRole<Guid>>().Ignore(x => x.NormalizedName);
         AdminSeeder(builder);
+        builder.Entity<StoreCategory>().HasData(
+            new StoreCategory
+            {
+                Id = -1,
+                Name = "All",
+            }
+        );
         base.OnModelCreating(builder);
     }
 
