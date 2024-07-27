@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection.Emit;
 
 namespace Loyalify.Infrastructure.Data;
 
@@ -23,6 +24,7 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
     }
     public DbSet<Store> Stores { get; set; }
     public DbSet<StoreCategory> StoreCategories { get; set; }
+    public DbSet<Offer> Offers { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>().Ignore(x => x.TwoFactorEnabled)
@@ -43,9 +45,30 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
                 Name = "All",
             }
         );
+        builder.Entity<Store>()
+                .Property(s => s.PointRatio)
+                .HasColumnType("decimal(18, 6)");
         base.OnModelCreating(builder);
     }
+    public override Task<int> SaveChangesAsync(
+        bool acceptAllChangesOnSuccess,
+        CancellationToken token = default)
+    {
+        var entitiesToUpdate = ChangeTracker.Entries<Offer>()
+            .Where(e => e.State == EntityState.Modified && e.Property("Deadline").IsModified)
+            .ToList();
 
+        foreach (var entityEntry in entitiesToUpdate)
+        {
+            var entity = entityEntry.Entity;
+            if (entity.Deadline < DateTime.Now)
+            {
+                entity.IsActive = false;
+            }
+        }
+
+        return base.SaveChangesAsync(acceptAllChangesOnSuccess, token);
+    }
     private static void AdminSeeder(ModelBuilder builder)
     {
         IdentityRole<Guid> role1 = RolesSeeder(builder);

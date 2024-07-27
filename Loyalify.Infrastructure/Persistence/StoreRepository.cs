@@ -106,7 +106,10 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
     }
     public async Task<Guid> GetStoreUser(int Id)
     {
-        var userId = await _dbContext.Stores.Where(x => x.Id == Id).Select(x => x.User.Id).FirstOrDefaultAsync();
+        var userId = await _dbContext.Stores
+            .Where(x => x.Id == Id)
+            .Select(x => x.User.Id)
+            .FirstOrDefaultAsync();
         return userId;
     }
     public async Task<List<StoresListAdminDTO>> GetStoresAdmin(int CategoryId, string Search)

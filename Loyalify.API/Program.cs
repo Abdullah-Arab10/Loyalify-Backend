@@ -1,3 +1,4 @@
+using Hangfire;
 using Loyalify.API;
 using Loyalify.Application;
 using Loyalify.Infrastructure;
@@ -39,5 +40,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.UseHangfireDashboard();
 app.Run();
