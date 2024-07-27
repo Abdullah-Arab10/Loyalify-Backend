@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Hangfire;
 using Loyalify.Application.Common.Behaviors;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,8 @@ public static class DenpendecyInjectcion
         services.AddScoped(
             typeof(IPipelineBehavior<,>),
             typeof(ValidationBehavior<,>));
-        
+        services.AddHangfire(config => config.UseSqlServerStorage("Server=.\\SQLExpress;Database=Loyalify;Trusted_Connection=true;TrustServerCertificate=true;"));
+        services.AddHangfireServer();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         return services;
     }

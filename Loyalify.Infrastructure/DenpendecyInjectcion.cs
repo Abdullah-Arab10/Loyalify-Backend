@@ -32,6 +32,7 @@ public static class DenpendecyInjectcion
         services.AddSingleton<IPhotoService, PhotoService>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IStoreRepository, StoreRepository>();
+        services.AddScoped<IOfferRepository, OfferRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         return services;
     }

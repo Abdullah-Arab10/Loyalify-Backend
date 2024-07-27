@@ -55,6 +55,6 @@ public class AddStoreCommandHandler(
         await _storeRepository.Add(store);
         return new AddStoreResult(
             (HttpStatusCode)StatusCodes.Status201Created,
-            Message: "Store and store manager account have been created Successfully");
+            Message: "Store and store manager account have been created successfully");
     }
 }
