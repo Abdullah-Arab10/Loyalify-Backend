@@ -24,6 +24,10 @@ public class AddOfferCommandHandler(
         {
             return Errors.Store.NoStores;
         }
+        if (store.IsActive == false)
+        {
+            return Errors.Offer.DeactivatedStore;
+        }
         var offer = new Offer()
         {
             Name = command.Name,
