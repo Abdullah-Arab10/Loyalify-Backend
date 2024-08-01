@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Loyalify.Infrastructure\Loyalify.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\" />
+  </ItemGroup>
+
 </Project>
