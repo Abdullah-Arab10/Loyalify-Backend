@@ -1,6 +1,7 @@
 ﻿using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Application.Services.OfferServices.Commands.AddOffer;
 using Loyalify.Application.Services.OfferServices.Queries.GetAllOffersUser;
+using Loyalify.Application.Services.OfferServices.Queries.GetStoreOffers;
 using Loyalify.Contracts.Offer;
 using MapsterMapper;
 using MediatR;
@@ -44,6 +45,15 @@ public class OfferController(
     public async Task<IActionResult> GetAllOffersUser(int Page = 1)
     {
         var authResult = await _mediator.Send(new GetAllOffersUserQuery(Page));
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<GetAllOffersResponse>(authResult)),
+            Problem);
+    }
+    [HttpGet]
+    [Route("GetStoreOffers/{Id}")]
+    public async Task<IActionResult> GetStoreOffers(int Id)
+    {
+        var authResult = await _mediator.Send(new GetStoreOffersQuery(Id));
         return authResult.Match(
             authResult => Ok(_mapper.Map<GetAllOffersResponse>(authResult)),
             Problem);

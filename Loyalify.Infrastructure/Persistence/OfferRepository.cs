@@ -8,12 +8,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalify.Infrastructure.Persistence;
 
 public class OfferRepository(
-    LoyalifyDbContext dbContext,
-    IDateTimeProvider dateTimeProvider) 
+    LoyalifyDbContext dbContext) 
     : IOfferRepository
 {
     private readonly LoyalifyDbContext _dbContext = dbContext;
-    private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
     public async Task Add(Offer offer)
     {
         await _dbContext.AddAsync(offer);
@@ -39,9 +37,23 @@ public class OfferRepository(
     {
         var pageResult = 10f;
         return await _dbContext.Offers
-            .Where(x => x.IsActive == true)
+            .Where(x => x.IsActive == true && x.Store.IsActive == true)
             .OrderByDescending(x => x.Id)
             .Take(Page * (int)pageResult)
+            .Select(x => new OffersListUserDTO
+            {
+                Id = x.Id,
+                OfferName = x.Name,
+                OfferImage = x.Image,
+                StoreName = x.Store.Name,
+                StoreImage = x.Store.StoreImage,
+                PointAmount = x.PointAmount
+            }).ToListAsync();
+    }
+    public async Task<List<OffersListUserDTO>> GetStoreOffers(int Id)
+    {
+        return await _dbContext.Offers
+            .Where(x => x.Store.Id == Id && x.IsActive == true)
             .Select(x => new OffersListUserDTO
             {
                 Id = x.Id,
