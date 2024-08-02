@@ -64,27 +64,27 @@ public class OfferRepository(
                 PointAmount = x.PointAmount
             }).ToListAsync();
     }
-    public OfferDetailsDTO GetOfferDetails(Guid UserId, Guid OfferId)
+    public async Task<OfferDetailsDTO> GetOfferDetails(Guid UserId, Guid OfferId)
     {
         var offer = _dbContext.Offers.Where(x => x.Id == OfferId).AsQueryable();
-        var offerDetails = new OfferDetailsDTO 
+        var offerDetails = new OfferDetailsDTO
         {
-            PointAmount = offer.Select(x => x.PointAmount).FirstOrDefault(),
-            CreatedAt = offer.Select(x => x.CreatedAt).FirstOrDefault(),
-            Deadline = offer.Select(x => x.Deadline).FirstOrDefault(),
-            UserPoints = _dbContext.Users.Where(x => x.Id == UserId).Select(x => x.Points).FirstOrDefault() 
+            PointAmount = await offer.Select(x => x.PointAmount).FirstOrDefaultAsync(),
+            CreatedAt = await offer.Select(x => x.CreatedAt).FirstOrDefaultAsync(),
+            Deadline = await offer.Select(x => x.Deadline).FirstOrDefaultAsync(),
+            UserPoints = await _dbContext.Users.Where(x => x.Id == UserId).Select(x => x.Points).FirstOrDefaultAsync() 
         };
-        var Name = offer.Select(x => x.Name).FirstOrDefault();
+        var Name = await offer.Select(x => x.Name).FirstOrDefaultAsync();
         if(Name is not null)
         {
             offerDetails.Name = Name;
         }
-        var Description = offer.Select(x => x.Description).FirstOrDefault();
+        var Description = await offer.Select(x => x.Description).FirstOrDefaultAsync();
         if (Description is not null)
         {
             offerDetails.Description = Description;
         }
-        var Image = offer.Select(x => x.Image).FirstOrDefault();
+        var Image = await offer.Select(x => x.Image).FirstOrDefaultAsync();
         if (Image is not null)
         {
             offerDetails.Image = Image;
