@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Reflection.Emit;
 
 namespace Loyalify.Infrastructure.Data;
 
@@ -45,29 +44,15 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
                 Name = "All",
             }
         );
+        builder.Entity<User>()
+                .Property(s => s.Points)
+                .HasColumnType("decimal(18, 3)");
+        base.OnModelCreating(builder);
+
         builder.Entity<Store>()
                 .Property(s => s.PointRatio)
-                .HasColumnType("decimal(18, 6)");
+                .HasColumnType("decimal(18, 3)");
         base.OnModelCreating(builder);
-    }
-    public override Task<int> SaveChangesAsync(
-        bool acceptAllChangesOnSuccess,
-        CancellationToken token = default)
-    {
-        var entitiesToUpdate = ChangeTracker.Entries<Offer>()
-            .Where(e => e.State == EntityState.Modified && e.Property("Deadline").IsModified)
-            .ToList();
-
-        foreach (var entityEntry in entitiesToUpdate)
-        {
-            var entity = entityEntry.Entity;
-            if (entity.Deadline < DateTime.Now)
-            {
-                entity.IsActive = false;
-            }
-        }
-
-        return base.SaveChangesAsync(acceptAllChangesOnSuccess, token);
     }
     private static void AdminSeeder(ModelBuilder builder)
     {

@@ -64,4 +64,31 @@ public class OfferRepository(
                 PointAmount = x.PointAmount
             }).ToListAsync();
     }
+    public OfferDetailsDTO GetOfferDetails(Guid UserId, Guid OfferId)
+    {
+        var offer = _dbContext.Offers.Where(x => x.Id == OfferId).AsQueryable();
+        var offerDetails = new OfferDetailsDTO 
+        {
+            PointAmount = offer.Select(x => x.PointAmount).FirstOrDefault(),
+            CreatedAt = offer.Select(x => x.CreatedAt).FirstOrDefault(),
+            Deadline = offer.Select(x => x.Deadline).FirstOrDefault(),
+            UserPoints = _dbContext.Users.Where(x => x.Id == UserId).Select(x => x.Points).FirstOrDefault() 
+        };
+        var Name = offer.Select(x => x.Name).FirstOrDefault();
+        if(Name is not null)
+        {
+            offerDetails.Name = Name;
+        }
+        var Description = offer.Select(x => x.Description).FirstOrDefault();
+        if (Description is not null)
+        {
+            offerDetails.Description = Description;
+        }
+        var Image = offer.Select(x => x.Image).FirstOrDefault();
+        if (Image is not null)
+        {
+            offerDetails.Image = Image;
+        }
+        return offerDetails;
+    }
 }
