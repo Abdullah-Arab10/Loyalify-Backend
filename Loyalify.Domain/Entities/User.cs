@@ -12,5 +12,6 @@ public class User : IdentityUser<Guid>
         set => base.Email = value; 
     }
     public string Address { get; set; } = null!;
+    public decimal Points { get; set; } = 2000;
     public bool IsActive { get; set; }
 }

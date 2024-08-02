@@ -2,6 +2,7 @@
 using Loyalify.Application.Services.OfferServices.Queries.GetAllOffersUser;
 using Loyalify.Application.Services.OfferServices.Queries.GetStoreOffers;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
+using Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
 using Loyalify.Contracts.Offer;
 using Loyalify.Contracts.Store;
 using Mapster;
@@ -18,5 +19,8 @@ public class OfferMappingConfig : IRegister
         config.NewConfig<GetStoreOffersResult, GetAllOffersResponse>()
             .Map(dest => dest.Status, src => src.Status)
             .Map(dest => dest.Items, src => src.Items.Adapt<List<OffersListUserDTO>>());
+        config.NewConfig<GetStoreInfoResult, GetStoreInfoResponse>()
+          .Map(dest => dest.Status, src => src.Status)
+          .Map(dest => dest.Items, src => src.Items.Adapt<OfferDetailsDTO>());
     }
 }
