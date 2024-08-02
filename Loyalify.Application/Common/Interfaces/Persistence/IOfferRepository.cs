@@ -10,5 +10,5 @@ public interface IOfferRepository
     Task UpdateIsActive(Guid offerId);
     Task<List<OffersListUserDTO>> GetAllOffersUser(int Page);
     Task<List<OffersListUserDTO>> GetStoreOffers(int Id);
-    OfferDetailsDTO GetOfferDetails(Guid UserId,Guid OfferId);
+    Task<OfferDetailsDTO> GetOfferDetails(Guid UserId,Guid OfferId);
 }

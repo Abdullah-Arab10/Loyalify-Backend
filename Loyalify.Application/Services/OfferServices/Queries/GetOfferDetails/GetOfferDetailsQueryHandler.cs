@@ -12,9 +12,8 @@ public class GetOfferDetailsQueryHandler(IOfferRepository offerRepository):
     private readonly IOfferRepository _offerRepository = offerRepository;
     public async Task<ErrorOr<GetOfferDetailsResult>> Handle(GetOfferDetailsQuery request, CancellationToken cancellationToken)
     {
-        await Task.CompletedTask;
         return new GetOfferDetailsResult(
             (HttpStatusCode)StatusCodes.Status200OK,
-            _offerRepository.GetOfferDetails(request.UserId, request.OfferId));
+            await _offerRepository.GetOfferDetails(request.UserId, request.OfferId));
     }
 }
