@@ -19,4 +19,8 @@
     <ProjectReference Include="..\Loyalify.Domain\Loyalify.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\PointsServices\Commands\" />
+  </ItemGroup>
+
 </Project>

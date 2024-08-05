@@ -39,7 +39,9 @@ public class OfferRepository(
         return await _dbContext.Offers
             .Where(x => x.IsActive == true && x.Store.IsActive == true)
             .OrderByDescending(x => x.Id)
-            .Take(Page * (int)pageResult)
+            .Skip((Page - 1) * (int)pageResult)
+            .Take((int)pageResult)
+            //.Take(Page * (int)pageResult)
             .Select(x => new OffersListUserDTO
             {
                 Id = x.Id,
