@@ -34,6 +34,7 @@ public static class DenpendecyInjectcion
         services.AddScoped<IStoreRepository, StoreRepository>();
         services.AddScoped<IOfferRepository, OfferRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IPointsRepository, PointsRepository>();
         return services;
     }
     public static IServiceCollection AddAuth(
