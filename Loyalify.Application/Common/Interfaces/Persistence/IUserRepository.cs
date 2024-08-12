@@ -10,4 +10,5 @@ public interface IUserRepository
     Task<bool> CheckPassword(User user, string password);
     Task<IdentityResult> AddUserToRole(User user, string Role);
     Task BlockUser(string Id);
+    Task<User?> GetUserById(Guid Id);
 }

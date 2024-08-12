@@ -93,4 +93,17 @@ public class OfferRepository(
         }
         return offerDetails;
     }
+    public async Task AddTransaction(Transaction transaction)
+    {
+        await _dbContext.Transactions.AddAsync(transaction);
+        await _dbContext.SaveChangesAsync();
+    }
+    public bool OfferAlreadyTaken(Guid UserId)
+    {
+        return _dbContext.Transactions.Any(x => x.User.Id == UserId);
+    }
+    public async Task<Offer?> GetOfferById(Guid Id)
+    {
+        return await _dbContext.Offers.FirstOrDefaultAsync(x => x.Id == Id);
+    }
 }

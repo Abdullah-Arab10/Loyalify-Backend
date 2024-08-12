@@ -165,7 +165,10 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             IsActive = x.IsActive
         };
     }
-
+    public async Task<decimal> GetStoreById(int Id)
+    {
+        return await _dbContext.Stores.Where(x => x.Id == Id).Select(x => x.PointRatio).FirstOrDefaultAsync();
+    }
     public async Task Update(UpdateStoreDTO store,int Id)
     {
         var eStore = await _dbContext.Stores.FindAsync(Id);

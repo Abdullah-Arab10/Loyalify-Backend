@@ -39,4 +39,8 @@ public class UserRepository(UserManager<User> userManager) : IUserRepository
             }
         }
     }
+    public async Task<User?> GetUserById(Guid Id)
+    {
+        return await _userManager.FindByIdAsync(Id.ToString());
+    }
 }
