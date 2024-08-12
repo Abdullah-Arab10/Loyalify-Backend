@@ -122,8 +122,6 @@ public class StoreController(
             authResult => Ok(_mapper.Map<AddStoreResponse>(authResult)),
             Problem);
     }
-
-
     [HttpGet]
     [Route("GetStoreById/{id}")]
     public async Task<IActionResult> GetStoreInfo(int id)

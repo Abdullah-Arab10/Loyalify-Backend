@@ -3,6 +3,6 @@
 public class AddPointsRequest
 {
     public Guid UserId { get; set; }
-    public int StoreId { get; set; }
+    public Guid StoreManagerId { get; set; }
     public decimal Bill { get; set; }
 }
