@@ -7,5 +7,5 @@ public class OffersListUserDTO
     public string? OfferImage { get; set; }
     public string StoreName { get; set; } = null!;
     public string? StoreImage { get; set; }
-    public int PointAmount { get; set; }
+    public decimal PointAmount { get; set; }
 }

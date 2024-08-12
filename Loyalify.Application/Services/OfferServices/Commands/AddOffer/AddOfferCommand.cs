@@ -6,7 +6,7 @@ namespace Loyalify.Application.Services.OfferServices.Commands.AddOffer;
 public record AddOfferCommand(
     string Name,
     string Description,
-    int PointAmount,
+    decimal PointAmount,
     int StoreId,
     int ExpiresIn,
     string Image) : IRequest<ErrorOr<AddOfferResult>>;

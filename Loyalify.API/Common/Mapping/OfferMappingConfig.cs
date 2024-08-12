@@ -1,7 +1,6 @@
 ﻿using Loyalify.Application.Common.DTOs;
 using Loyalify.Application.Services.OfferServices.Queries.GetAllOffersUser;
 using Loyalify.Application.Services.OfferServices.Queries.GetStoreOffers;
-using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
 using Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
 using Loyalify.Contracts.Offer;
 using Loyalify.Contracts.Store;

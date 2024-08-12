@@ -11,4 +11,7 @@ public interface IOfferRepository
     Task<List<OffersListUserDTO>> GetAllOffersUser(int Page);
     Task<List<OffersListUserDTO>> GetStoreOffers(int Id);
     Task<OfferDetailsDTO> GetOfferDetails(Guid UserId,Guid OfferId);
+    Task AddTransaction(Transaction transaction);
+    bool OfferAlreadyTaken(Guid UserId);
+    Task<Offer?> GetOfferById(Guid Id);
 }

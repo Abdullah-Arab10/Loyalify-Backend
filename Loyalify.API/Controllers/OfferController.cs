@@ -1,5 +1,6 @@
 ﻿using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Application.Services.OfferServices.Commands.AddOffer;
+using Loyalify.Application.Services.OfferServices.Commands.TakeOffer;
 using Loyalify.Application.Services.OfferServices.Queries.GetAllOffersUser;
 using Loyalify.Application.Services.OfferServices.Queries.GetOfferDetails;
 using Loyalify.Application.Services.OfferServices.Queries.GetStoreOffers;
@@ -67,6 +68,16 @@ public class OfferController(
         var authResult = await _mediator.Send(query);
         return authResult.Match(
             authResult => Ok(_mapper.Map<GetOfferDetailsResponse>(authResult)),
+            Problem);
+    }
+    [HttpPost]
+    [Route("TakeOffer")]
+    public async Task<IActionResult> TakeOffer([FromQuery] GetOfferDetailsRequest request)
+    {
+        var command = _mapper.Map<TakeOfferCommand>(request);
+        var authResult = await _mediator.Send(command);
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<TakeOfferResponse>(authResult)),
             Problem);
     }
 }

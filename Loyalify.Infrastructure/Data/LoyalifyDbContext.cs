@@ -24,6 +24,7 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
     public DbSet<Store> Stores { get; set; }
     public DbSet<StoreCategory> StoreCategories { get; set; }
     public DbSet<Offer> Offers { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>().Ignore(x => x.TwoFactorEnabled)
@@ -46,6 +47,11 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
         );
         builder.Entity<User>()
                 .Property(s => s.Points)
+                .HasColumnType("decimal(18, 3)");
+        base.OnModelCreating(builder);
+
+        builder.Entity<Offer>()
+                .Property(s => s.PointAmount)
                 .HasColumnType("decimal(18, 3)");
         base.OnModelCreating(builder);
 

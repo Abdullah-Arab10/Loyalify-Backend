@@ -1,5 +1,4 @@
-﻿using Loyalify.Application.Common.DTOs;
-using Loyalify.Application.Services.PointsServices.Queries.GetUserPoints;
+﻿using Loyalify.Application.Services.PointsServices.Queries.GetUserPoints;
 using Loyalify.Contracts.Points;
 using Mapster;
 
@@ -9,9 +8,6 @@ public class PointsMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<GetUserPointsResult, GetUserPointsResponse>()
-            .Map(dest => dest.Status, src => src.Status)
-            .Map(dest => dest.Points, src => src.points);
-    
+        config.NewConfig<GetUserPointsResult, GetUserPointsResponse>();
     }
 }
