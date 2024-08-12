@@ -5,5 +5,5 @@ namespace Loyalify.Application.Services.PointsServices.Commands.AddPoints;
 
 public record AddPointsCommand(
     Guid UserId,
-    int StoreId,
+    Guid StoreManagerId,
     decimal Bill): IRequest<ErrorOr<AddPointsResult>>;

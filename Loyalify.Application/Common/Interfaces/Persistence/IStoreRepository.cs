@@ -11,7 +11,8 @@ public interface IStoreRepository
     Task<bool> DeactivateStore(int Id);
     Task<Guid> GetStoreUser(int Id);
     Task<List<StoresListAdminDTO>> GetStoresAdmin(int CategoryId, string Search);
-    Task<decimal> GetStoreById(int Id);
     Task Update(UpdateStoreDTO Store,int Id);
     Task<GetStoreInfoDTO?> GetStoreInfo(int Id);
+    Task<bool> StoreIsActive(Guid Id);
+    Task<decimal> GetStorePointRatio(Guid Id);
 }

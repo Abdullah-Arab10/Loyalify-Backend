@@ -100,7 +100,7 @@ public class OfferRepository(
     }
     public bool OfferAlreadyTaken(Guid UserId)
     {
-        return _dbContext.Transactions.Any(x => x.User.Id == UserId);
+        return _dbContext.Transactions.Any(x => x.User != null && x.User.Id == UserId);
     }
     public async Task<Offer?> GetOfferById(Guid Id)
     {

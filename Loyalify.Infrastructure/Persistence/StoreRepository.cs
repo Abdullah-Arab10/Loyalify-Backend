@@ -146,7 +146,6 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             }
         }
     }
-
     private static Expression<Func<Store, StoresListAdminDTO>> StoreForm()
     {
         return x => new StoresListAdminDTO
@@ -164,10 +163,6 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             CoverImage = x.CoverImage,
             IsActive = x.IsActive
         };
-    }
-    public async Task<decimal> GetStoreById(int Id)
-    {
-        return await _dbContext.Stores.Where(x => x.Id == Id).Select(x => x.PointRatio).FirstOrDefaultAsync();
     }
     public async Task Update(UpdateStoreDTO store,int Id)
     {
@@ -217,5 +212,21 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
                 IsActive = x.IsActive
 
             }).FirstOrDefaultAsync();
+    }
+    public async Task<bool> StoreIsActive(Guid Id)
+    {
+        var storeId = await _dbContext.Stores
+            .Where(x => x.User.Id == Id)
+            .Select(x => x.Id).FirstOrDefaultAsync();
+        return await _dbContext.Stores
+            .Where(x => x.Id == storeId && x.IsActive == true)
+            .AnyAsync();
+    }
+    public async Task<decimal> GetStorePointRatio(Guid Id)
+    {
+        var storeId = await _dbContext.Stores.Where(x => x.User.Id == Id)
+            .Select(x => x.Id).FirstOrDefaultAsync();
+        return await _dbContext.Stores.Where(x => x.Id == storeId)
+            .Select(x => x.PointRatio).FirstOrDefaultAsync();
     }
 }
