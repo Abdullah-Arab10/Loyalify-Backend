@@ -10,7 +10,6 @@ public class StoresListAdminDTO
     public string PhoneNumber { get; set; } = null!;
     public string Address { get; set; } = null!;
     public decimal PointRatio { get; set; } 
-    public Guid UserId { get; set; }
     public int CategoryId { get; set; }
     public string CategoryName { get; set; } = null!;
     public string? StoreImage { get; set; }

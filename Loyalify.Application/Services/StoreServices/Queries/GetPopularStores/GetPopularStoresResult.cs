@@ -1,3 +1,8 @@
-﻿namespace Loyalify.Application.Services.StoreServices.Queries.GetPopularStores;
+﻿using Loyalify.Application.Common.DTOs;
+using System.Net;
 
-public record GetPopularStoresResult();
+namespace Loyalify.Application.Services.StoreServices.Queries.GetPopularStores;
+
+public record GetPopularStoresResult(
+    HttpStatusCode Status,
+    List<StoresListUserDTO> Items);

@@ -10,7 +10,6 @@ public class GetStoreInfoDTO
     public string Address { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
     public int CategoryId { get; set; }
-    public Guid UserId { get; set; } 
     public string? CoverImage { get; set; }
     public string? StoreImage { get; set; }
     [JsonIgnore]

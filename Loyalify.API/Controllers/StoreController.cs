@@ -6,7 +6,9 @@ using Loyalify.Application.Services.StoreServices.Commands.UpdateStore;
 using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresAdmin;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
+using Loyalify.Application.Services.StoreServices.Queries.GetPopularStores;
 using Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
+using Loyalify.Contracts.Offer;
 using Loyalify.Contracts.Store;
 using MapsterMapper;
 using MediatR;
@@ -128,7 +130,18 @@ public class StoreController(
     {
 
         var authResult = await _mediator.Send(new GetStoreInfoQuery(id));
-        return authResult.Match(authResult => Ok(_mapper.Map<GetStoreInfoResponse>(authResult)), Problem);
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<GetStoreInfoResponse>(authResult)),
+            Problem);
 
+    }
+    [HttpGet]
+    [Route("GetPopularStores")]
+    public async Task<IActionResult> GetPopularStores()
+    {
+        var authResult = await _mediator.Send(new GetPopularStoresQuery());
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<SeeStoresListResponse>(authResult)),
+            Problem);
     }
 }

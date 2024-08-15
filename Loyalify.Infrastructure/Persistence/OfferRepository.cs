@@ -1,6 +1,5 @@
 ﻿using Loyalify.Application.Common.DTOs;
 using Loyalify.Application.Common.Interfaces.Persistence;
-using Loyalify.Application.Common.Interfaces.Services;
 using Loyalify.Domain.Entities;
 using Loyalify.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -98,12 +97,33 @@ public class OfferRepository(
         await _dbContext.Transactions.AddAsync(transaction);
         await _dbContext.SaveChangesAsync();
     }
-    public bool OfferAlreadyTaken(Guid UserId)
+    public bool OfferAlreadyTaken(Guid UserId, Guid OfferId)
     {
-        return _dbContext.Transactions.Any(x => x.User != null && x.User.Id == UserId);
+        return _dbContext.Transactions.Any(x => x.Offer!.Id == OfferId && x.User!.Id == UserId);
     }
     public async Task<Offer?> GetOfferById(Guid Id)
     {
         return await _dbContext.Offers.FirstOrDefaultAsync(x => x.Id == Id);
+    }
+    public async Task<List<OffersListUserDTO>> GetPopularOffers()
+    {
+        var offers = _dbContext.Transactions
+            .Select(x => x.Offer)
+            .GroupBy(x => x!.Id)
+            .OrderByDescending(x => x.Count())
+            .Take(5)
+            .Select(x => x.Key)
+            .ToList();
+        return await _dbContext.Offers
+            .Where(offer => offers.Contains(offer.Id) && offer.IsActive == true)
+            .Select(x => new OffersListUserDTO
+            {
+                Id = x.Id,
+                OfferName = x.Name,
+                OfferImage = x.Image,
+                StoreName = x.Store.Name,
+                StoreImage = x.Store.StoreImage,
+                PointAmount = x.PointAmount
+            }).ToListAsync();
     }
 }

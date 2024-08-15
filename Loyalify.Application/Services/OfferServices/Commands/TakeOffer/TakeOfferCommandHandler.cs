@@ -5,7 +5,6 @@ using Loyalify.Domain.Common.Errors;
 using Loyalify.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 using System.Net;
 
 namespace Loyalify.Application.Services.OfferServices.Commands.TakeOffer;
@@ -23,12 +22,20 @@ public class TakeOfferCommandHandler(
     private readonly IDateTimeProvider _dateTimeProvider = dateTimeProvider;
     public async Task<ErrorOr<TakeOfferResult>> Handle(TakeOfferCommand request, CancellationToken cancellationToken)
     {
-        if (_offerRepository.OfferAlreadyTaken(request.UserId))
+        if (_offerRepository.OfferAlreadyTaken(request.UserId,request.OfferId))
         {
             return Errors.Offer.OfferAlreadyTaken;
         };
         var offer = _offerRepository.GetOfferById(request.OfferId).Result;
+        if (_dateTimeProvider.Now > offer!.Deadline)
+        {
+            return Errors.Offer.OfferExpired;
+        }
         var user = _userRepository.GetUserById(request.UserId).Result;
+        if(!user!.IsActive)
+        {
+            return Errors.Authentication.DeactivatedEmail;
+        }
         var transaction = new Transaction() 
         {
             Offer = offer,

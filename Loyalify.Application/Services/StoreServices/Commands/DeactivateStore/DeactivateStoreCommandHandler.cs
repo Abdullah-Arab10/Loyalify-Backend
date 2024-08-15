@@ -15,8 +15,8 @@ public class DeactivateStoreCommandHandler(
     private readonly IUserRepository _userRepository = userRepository;
     public async Task<ErrorOr<DeactivateStoreResult>> Handle(DeactivateStoreCommand request, CancellationToken cancellationToken)
     {
-        var userId = await _storeRepository.GetStoreUser(request.Id);
-        await _userRepository.BlockUser(userId.ToString());
+        //var userId = await _storeRepository.GetStoreUser(request.Id);
+        await _userRepository.BlockUser(request.Id);
         bool state = await _storeRepository.DeactivateStore(request.Id);
         if (state)
         {

@@ -1,12 +1,17 @@
 ﻿using Loyalify.Application.Common.Interfaces.Persistence;
 using Loyalify.Domain.Entities;
+using Loyalify.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalify.Infrastructure.Persistence;
 
-public class UserRepository(UserManager<User> userManager) : IUserRepository
+public class UserRepository(
+    UserManager<User> userManager,
+    LoyalifyDbContext dbContext) : IUserRepository
 {
     private readonly UserManager<User> _userManager = userManager;
+    private readonly LoyalifyDbContext _dbContext = dbContext;
     public async Task<IdentityResult> Add(User user, string password)
     {
         return await _userManager.CreateAsync(user, password);
@@ -24,10 +29,12 @@ public class UserRepository(UserManager<User> userManager) : IUserRepository
     {
         return await _userManager.AddToRoleAsync(user, Role);
     }
-    public async Task BlockUser(string Id)
+    public async Task BlockUser(int Id)
     {
-        var user = await _userManager.FindByIdAsync(Id);
-        if (user is not null)
+        var users = await _dbContext.Users
+            .Where(x => x.Store != null && x.Store.Id == Id)
+            .ToListAsync();
+        foreach (var user in users)
         {
             if (user.IsActive == true)
             {

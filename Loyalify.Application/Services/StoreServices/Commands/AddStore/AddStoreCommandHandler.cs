@@ -27,6 +27,20 @@ public class AddStoreCommandHandler(
         {
             return Errors.Category.CategoryNotExisted;
         }
+        var store = new Domain.Entities.Store()
+        {
+            Name = command.Name,
+            Description = command.Description,
+            Address = command.Address,
+            PhoneNumber = command.PhoneNumber,
+            PointRatio = command.PointRation,
+            Category = category,
+            CoverImage = command.CoverImage,
+            StoreImage = command.StoreImage,
+            IsActive = true
+        };
+        await _storeRepository.Add(store);
+        var s = await _storeRepository.GetStoreById(store.Id);
         var storeManager = new User()
         {
             FirstName = command.Email,
@@ -35,24 +49,11 @@ public class AddStoreCommandHandler(
             UserName = command.Email,
             PhoneNumber = command.PhoneNumber,
             Address = command.Address,
-            IsActive = true
-        };
-        var store = new Domain.Entities.Store()
-        {
-            Name = command.Name,
-            Description = command.Description,
-            Address = command.Address,
-            PhoneNumber = command.PhoneNumber,
-            PointRatio = command.PointRation,
-            User = storeManager,
-            Category = category,
-            CoverImage = command.CoverImage,
-            StoreImage = command.StoreImage,
+            Store = s,
             IsActive = true
         };
         await _userRepository.Add(storeManager, command.Password);
         await _userRepository.AddUserToRole(storeManager, "StoreManager");
-        await _storeRepository.Add(store);
         return new AddStoreResult(
             (HttpStatusCode)StatusCodes.Status201Created,
             Message: "Store and store manager account have been created successfully");

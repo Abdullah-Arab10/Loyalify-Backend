@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using Loyalify.Application.Services.Authentication.Commands.Register;
+using Loyalify.Application.Services.Authentication.Commands.RegisterACashier;
 using Loyalify.Application.Services.Authentication.Queries.Login;
 using Loyalify.Contracts.Authentication;
 using Loyalify.Domain.Common.Errors;
@@ -47,5 +48,19 @@ public class AuthenticationController(ISender mediator, IMapper mapper) : ApiCon
             authResult => Ok(_mapper.Map<LoginResponse>(authResult)),
             Problem);
     }
-    
+    [HttpPost]
+    [Route("RegisterACashier/{StoreManagerId}")]
+    public async Task<IActionResult> RegisterACashier(Guid StoreManagerId,RegisterACashierRequest request)
+    {
+        var command = new RegisterACashierCommand(
+            StoreManagerId,
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password);
+        var authResult = await _mediator.Send(command);
+        return authResult.Match(
+            authResult => Ok(_mapper.Map<RegisterResponse>(authResult)),
+            Problem);
+    }
 }

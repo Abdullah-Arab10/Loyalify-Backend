@@ -13,5 +13,6 @@ public class User : IdentityUser<Guid>
     }
     public string Address { get; set; } = null!;
     public decimal Points { get; set; } = 2000;
+    public Store? Store { get; set; }
     public bool IsActive { get; set; }
 }

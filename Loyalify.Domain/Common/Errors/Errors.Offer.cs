@@ -12,5 +12,7 @@ public static partial class Errors
             description: "This store is deactivated");
         public static Error OfferAlreadyTaken => Error.Forbidden(
             description: "This user already took the offer");
+        public static Error OfferExpired => Error.Forbidden(
+            description: "Deadline passed");
     }
 }

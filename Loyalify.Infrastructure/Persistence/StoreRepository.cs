@@ -3,6 +3,7 @@ using Loyalify.Application.Common.Interfaces.Persistence;
 using Loyalify.Domain.Entities;
 using Loyalify.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 using System.Linq.Expressions;
 
 namespace Loyalify.Infrastructure.Persistence;
@@ -104,14 +105,14 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
         }
         
     }
-    public async Task<Guid> GetStoreUser(int Id)
+    /*public async Task<Guid> GetStoreUser(int Id)
     {
         var userId = await _dbContext.Stores
             .Where(x => x.Id == Id)
             .Select(x => x.User.Id)
             .FirstOrDefaultAsync();
         return userId;
-    }
+    }*/
     public async Task<List<StoresListAdminDTO>> GetStoresAdmin(int CategoryId, string Search)
     {
         if (CategoryId == 0)
@@ -156,7 +157,6 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
             Address = x.Address,
             PhoneNumber = x.PhoneNumber,
             PointRatio = x.PointRatio,
-            UserId = x.User.Id,
             CategoryId = x.Category.Id,
             CategoryName = x.Category.Name,
             StoreImage = x.StoreImage,
@@ -208,25 +208,54 @@ public class StoreRepository(LoyalifyDbContext dbContext) : IStoreRepository
                 CoverImage = x.CoverImage,
                 StoreImage = x.StoreImage,
                 CategoryId = x.Category.Id,
-                UserId = x.User.Id,
                 IsActive = x.IsActive
-
             }).FirstOrDefaultAsync();
     }
     public async Task<bool> StoreIsActive(Guid Id)
     {
-        var storeId = await _dbContext.Stores
-            .Where(x => x.User.Id == Id)
-            .Select(x => x.Id).FirstOrDefaultAsync();
+        var storeId = await _dbContext.Users
+            .Where(x => x.Id == Id)
+            .Select(x => x.Store!.Id).FirstOrDefaultAsync();
         return await _dbContext.Stores
             .Where(x => x.Id == storeId && x.IsActive == true)
             .AnyAsync();
     }
     public async Task<decimal> GetStorePointRatio(Guid Id)
     {
-        var storeId = await _dbContext.Stores.Where(x => x.User.Id == Id)
-            .Select(x => x.Id).FirstOrDefaultAsync();
+        var storeId = await _dbContext.Users
+            .Where(x => x.Id == Id)
+            .Select(x => x.Store!.Id).FirstOrDefaultAsync();
         return await _dbContext.Stores.Where(x => x.Id == storeId)
             .Select(x => x.PointRatio).FirstOrDefaultAsync();
+    }
+    public async Task<List<StoresListUserDTO>> GetPopularStores()
+    {
+        var offers = _dbContext.Transactions
+            .GroupBy(x => x.Offer!.Store.Id)
+            .OrderByDescending(x => x.Count())
+            .Take(5)
+            .Select(x => x.Key)
+            .ToList();
+        var topStores = await _dbContext.Offers
+            .Where(offer => offers.Contains(offer.Store.Id))
+            .Select(offer => offer.Store)
+            .Distinct()
+            .Select(x => new StoresListUserDTO
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Category = x.Category.Name,
+                StoreImage = x.StoreImage
+            }).ToListAsync();
+        return topStores;
+    }
+    public async Task<Store?> GetStoreById(int Id)
+    {
+        return await _dbContext.Stores.FirstOrDefaultAsync(x => x.Id == Id);
+    }
+    public async Task<int> GetUserStoreId(Guid Id)
+    {
+        return await _dbContext.Users.Where(x => x.Id == Id)
+            .Select(x => x.Store!.Id).FirstOrDefaultAsync();
     }
 }

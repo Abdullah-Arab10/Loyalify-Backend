@@ -17,7 +17,6 @@ public class Store
         set { _pointRatio = value / 100; }
     }
     public StoreCategory Category { get; set; } = null!;
-    public User User { get; set; } = null!;
     public string? CoverImage { get; set; }
     public string? StoreImage { get; set; }
     public bool IsActive { get; set; }
