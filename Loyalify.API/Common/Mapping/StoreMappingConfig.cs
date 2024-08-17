@@ -1,12 +1,15 @@
 ﻿using Loyalify.Application.Common.DTOs;
 using Loyalify.Application.Services.CategoryServices.Commands.AddCategory;
 using Loyalify.Application.Services.CategoryServices.Queries.GetCategories;
+using Loyalify.Application.Services.StatisticsServices.Queries.GetActiveStoresCount;
+using Loyalify.Application.Services.StatisticsServices.Queries.GetStoresCount;
 using Loyalify.Application.Services.StoreServices.Queries.DeactivateStore;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresAdmin;
 using Loyalify.Application.Services.StoreServices.Queries.GetAllStoresUser;
 using Loyalify.Application.Services.StoreServices.Queries.GetPopularStores;
 using Loyalify.Application.Services.StoreServices.Queries.GetStoreInfo;
 using Loyalify.Contracts.Category;
+using Loyalify.Contracts.Statistics;
 using Loyalify.Contracts.Store;
 using Loyalify.Domain.Entities;
 using Mapster;

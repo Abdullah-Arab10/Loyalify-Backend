@@ -16,13 +16,13 @@ public class AddPointsCommandHandler(
     private readonly IStoreRepository _storeRepository = storeRepository;
     public async Task<ErrorOr<AddPointsResult>> Handle(AddPointsCommand request, CancellationToken cancellationToken)
     {
-        var ratio = _storeRepository.GetStorePointRatio(request.StoreManagerId).Result;
-        if(!_storeRepository.StoreIsActive(request.StoreManagerId).Result)
+        var ratio = _storeRepository.GetStorePointRatio(request.CashierId).Result;
+        if(!_storeRepository.StoreIsActive(request.CashierId).Result)
         {
             return Errors.Store.StoreDeactivated;
         }
         var points = ratio * request.Bill;
-        await _pointsRepository.UpdateUserPoints(request.UserId,points);
+        await _pointsRepository.UpdateUserPoints(request.UserId,points / 100);
         return new AddPointsResult(
             (HttpStatusCode)StatusCodes.Status200OK,
             "Points added to the user");
