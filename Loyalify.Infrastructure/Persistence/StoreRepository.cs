@@ -3,7 +3,6 @@ using Loyalify.Application.Common.Interfaces.Persistence;
 using Loyalify.Domain.Entities;
 using Loyalify.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 using System.Linq.Expressions;
 
 namespace Loyalify.Infrastructure.Persistence;
