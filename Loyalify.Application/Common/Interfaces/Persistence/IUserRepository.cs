@@ -11,5 +11,6 @@ public interface IUserRepository
     Task<IdentityResult> AddUserToRole(User user, string Role);
     Task BlockUser(int Id);
     Task<User?> GetUserById(Guid Id);
-    
+    void AddDeviceToken(NotificationToken Token);
+    Task<string> GetDeviceToken(Guid Id);
 }

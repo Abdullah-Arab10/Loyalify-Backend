@@ -1,5 +1,6 @@
 ﻿using Loyalify.Application.Services.PointsServices.Commands.AddPoints;
 using Loyalify.Application.Services.PointsServices.Queries.GetUserPointsp;
+using Loyalify.Contracts.Notification;
 using Loyalify.Contracts.Offer;
 using Loyalify.Contracts.Points;
 using MapsterMapper;
@@ -31,6 +32,13 @@ public class PointsController (
     {
         var command = _mapper.Map<AddPointsCommand>(request);
         var authResult = await _mediator.Send(command);
+        var message = new MessageRequest()
+        {
+            Title = "New points!",
+            Body = $"The points has been added to your account",
+            DeviceToken = authResult.Value.DeviceToken
+        };
+        await SendMessageAsync(message);
         return authResult.Match(
             authResult => Ok(_mapper.Map<TakeOfferResponse>(authResult)),
             Problem);

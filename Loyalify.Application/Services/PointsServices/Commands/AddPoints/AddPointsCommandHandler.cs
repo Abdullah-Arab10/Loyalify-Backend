@@ -9,11 +9,13 @@ namespace Loyalify.Application.Services.PointsServices.Commands.AddPoints;
 
 public class AddPointsCommandHandler(
     IStoreRepository storeRepository,
-    IPointsRepository pointsRepository):
+    IPointsRepository pointsRepository,
+    IUserRepository userRepository):
     IRequestHandler<AddPointsCommand, ErrorOr<AddPointsResult>>
 {
     private readonly IPointsRepository _pointsRepository = pointsRepository;
     private readonly IStoreRepository _storeRepository = storeRepository;
+    private readonly IUserRepository _userRepository = userRepository;
     public async Task<ErrorOr<AddPointsResult>> Handle(AddPointsCommand request, CancellationToken cancellationToken)
     {
         var ratio = _storeRepository.GetStorePointRatio(request.CashierId).Result;
@@ -25,6 +27,7 @@ public class AddPointsCommandHandler(
         await _pointsRepository.UpdateUserPoints(request.UserId,points / 100);
         return new AddPointsResult(
             (HttpStatusCode)StatusCodes.Status200OK,
-            "Points added to the user");
+            "Points added to the user",
+            await _userRepository.GetDeviceToken(request.UserId));
     }
 }

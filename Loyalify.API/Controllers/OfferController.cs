@@ -5,6 +5,7 @@ using Loyalify.Application.Services.OfferServices.Queries.GetAllOffersUser;
 using Loyalify.Application.Services.OfferServices.Queries.GetOfferDetails;
 using Loyalify.Application.Services.OfferServices.Queries.GetPopularOffers;
 using Loyalify.Application.Services.OfferServices.Queries.GetStoreOffers;
+using Loyalify.Contracts.Notification;
 using Loyalify.Contracts.Offer;
 using MapsterMapper;
 using MediatR;
@@ -77,6 +78,13 @@ public class OfferController(
     {
         var command = _mapper.Map<TakeOfferCommand>(request);
         var authResult = await _mediator.Send(command);
+        var message = new MessageRequest()
+        {
+            Title = "Taken!",
+            Body = $"The has been taken successfully",
+            DeviceToken = authResult.Value.DeviceToken
+        };
+        await SendMessageAsync(message);
         return authResult.Match(
             authResult => Ok(_mapper.Map<TakeOfferResponse>(authResult)),
             Problem);
