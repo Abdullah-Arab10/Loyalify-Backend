@@ -30,6 +30,10 @@ public class StatisticsRepository(LoyalifyDbContext dbContext): IStatisticsRepos
     {
         var TakenOffersCount = _dbContext.Transactions.GroupBy(x => x.Offer).Count();
         var offersCount = _dbContext.Offers.Count();
+        if(offersCount == 0)
+        {
+            return 0;
+        }
         decimal ratio = (decimal)TakenOffersCount / offersCount * 100;
         return ratio;
     }
