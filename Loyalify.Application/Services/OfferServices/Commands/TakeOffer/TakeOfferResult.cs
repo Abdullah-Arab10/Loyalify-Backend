@@ -4,4 +4,5 @@ namespace Loyalify.Application.Services.OfferServices.Commands.TakeOffer;
 
 public record TakeOfferResult(
     HttpStatusCode Status,
-    string Message);
+    string Message,
+    string DeviceToken);

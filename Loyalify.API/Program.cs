@@ -1,7 +1,10 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
 using Hangfire;
 using Loyalify.API;
 using Loyalify.Application;
 using Loyalify.Infrastructure;
+using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.Extensions.FileProviders;
 
 
@@ -13,8 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddPresentation()
     .AddApplication()
-    .AddInfrastructure(builder.Configuration); 
-
+    .AddInfrastructure(builder.Configuration);
+FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential
+    .FromFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+    "")),
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

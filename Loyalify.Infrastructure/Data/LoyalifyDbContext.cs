@@ -25,6 +25,7 @@ public class LoyalifyDbContext(DbContextOptions<LoyalifyDbContext> options)
     public DbSet<StoreCategory> StoreCategories { get; set; }
     public DbSet<Offer> Offers { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<NotificationToken> NotificationTokens { get; set; }
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<User>().Ignore(x => x.TwoFactorEnabled)

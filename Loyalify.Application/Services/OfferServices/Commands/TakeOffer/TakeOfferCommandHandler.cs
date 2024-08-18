@@ -49,6 +49,7 @@ public class TakeOfferCommandHandler(
         }
         return new TakeOfferResult(
             (HttpStatusCode)StatusCodes.Status200OK,
-            "Operation completed");
+            "Operation completed",
+            await _userRepository.GetDeviceToken(request.UserId));
     }
 }

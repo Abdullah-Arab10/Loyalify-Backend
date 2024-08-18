@@ -50,4 +50,19 @@ public class UserRepository(
     {
         return await _userManager.FindByIdAsync(Id.ToString());
     }
+    public void AddDeviceToken(NotificationToken Token)
+    {
+        _dbContext.NotificationTokens.Add(Token);
+    }
+    public async Task<string> GetDeviceToken(Guid Id)
+    {
+        var user = await _dbContext.NotificationTokens
+            .Where(x => x.User.Id == Id).Select(x => x.DeviceToken)
+            .FirstOrDefaultAsync();
+        if (user != null)
+        {
+            return user;
+        }
+        return null!;
+    }
 }

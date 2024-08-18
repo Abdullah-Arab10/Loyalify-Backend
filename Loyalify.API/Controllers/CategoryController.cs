@@ -31,7 +31,7 @@ public class CategoryController(
     }
     [HttpPost]
     [Route("AddCategory")]
-    public async Task<IActionResult> AddCategory([FromForm] AddCategoryRequest request)
+    public async Task<IActionResult> AddCategory([FromBody] AddCategoryRequest request)
     {
         var command = new AddCategoryCommand(request.Name);
         ErrorOr<AddCategoryResult> authResult = await _mediator.Send(command);
