@@ -1,9 +1,8 @@
 ﻿using System.Net;
 
 namespace Loyalify.Contracts.Statistics;
-
-public class GetPointsResponse
+public class GetStatisticsResponse
 {
     public HttpStatusCode Status { get; set; }
-    public decimal Points { get; set; }
+    public object? items { get; set; }
 }

@@ -25,7 +25,7 @@ public class PointsController (
             authResult => Ok(_mapper.Map<GetUserPointsResponse>(authResult)),
             Problem);
     }
-    [HttpPut]
+    [HttpPost]
     [Route("AddPoints")]
     public async Task<IActionResult> AddPoints(AddPointsRequest request)
     {
